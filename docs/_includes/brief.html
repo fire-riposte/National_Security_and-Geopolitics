@@ -1,0 +1,29 @@
+{%- comment -%}
+  One brief in a monitor panel. Params: post (the post), body (its rendered
+  HTML), label (the cyan system label above the date).
+{%- endcomment -%}
+{%- assign post = include.post %}
+{%- assign body = include.body %}
+{%- assign story_count = body | split: "<p><strong>" | size | minus: 2 %}
+{%- assign words = body | strip_html | number_of_words %}
+{%- assign minutes = words | divided_by: 230 | plus: 1 %}
+<article class="panel">
+  <header class="brief-head">
+    <p class="label">SYS // {{ include.label | default: "DAILY BRIEF" }}</p>
+    <h1 class="brief-head__title">{{ post.date | date: "%A, %B %-d, %Y" }}</h1>
+    <p class="readout">
+      <span>FILED {{ post.date | date: "%H:%M" }} ET</span>
+      {%- if story_count > 0 %}
+      <span>{{ story_count }} {% if story_count == 1 %}STORY{% else %}STORIES{% endif %}</span>
+      {%- endif %}
+      <span>{{ minutes }} MIN READ</span>
+      {%- if include.permalink %}
+      <a href="{{ post.url | relative_url }}">PERMALINK</a>
+      {%- endif %}
+    </p>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+  <div class="brief">
+    {{ body }}
+  </div>
+</article>

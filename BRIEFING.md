@@ -71,7 +71,10 @@ the section out if nothing qualifies.
 
 ## Template
 
-Leave out any section with nothing in it. Section order is fixed.
+Leave out any section with nothing in it. Section order is fixed. The site's
+styling depends on this shape: the bottom line must be the first paragraph, each
+story paragraph must open with its bold headline, and section headings must
+keep these exact names.
 
 ```markdown
 ---
@@ -105,5 +108,5 @@ what's alleged or confirmed.> *Why it matters:* <one sentence.>
 - <2 to 4 bullets: hearings, deadlines, trials, summits, or decisions due in the
   coming days, taken from the sources.>
 
-<small>Coverage: <window from the header>. <N> stories scanned from <M> sources.</small>
+<p class="coverage">Coverage: <window from the header>. <N> stories scanned from <M> sources.</p>
 ```

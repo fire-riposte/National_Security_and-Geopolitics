@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<article class="panel">
+  <header class="brief-head">
+    <p class="label">SYS // {{ page.code | default: "FILE" }}</p>
+    <h1 class="brief-head__title">{{ page.title }}</h1>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>

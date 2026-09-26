@@ -1,0 +1,13 @@
+---
+layout: default
+---
+{% include brief.html post=page body=content label="DAILY BRIEF" %}
+<nav class="pager" aria-label="More briefs">
+  {%- if page.previous %}
+  <a class="button button--ghost" href="{{ page.previous.url | relative_url }}">&larr; {{ page.previous.date | date: "%b %-d" }}</a>
+  {%- endif %}
+  <a class="button button--ghost" href="{{ '/archive/' | relative_url }}">Archive</a>
+  {%- if page.next %}
+  <a class="button button--ghost" href="{{ page.next.url | relative_url }}">{{ page.next.date | date: "%b %-d" }} &rarr;</a>
+  {%- endif %}
+</nav>

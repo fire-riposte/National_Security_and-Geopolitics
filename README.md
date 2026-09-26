@@ -26,7 +26,16 @@ to this repo. The `docs/` folder is a Jekyll site, ready for GitHub Pages.
 | `BRIEFING.md` | Editorial rules and the brief template. Change focus or tone here. |
 | `scripts/fetch_feeds.py` | Feed fetcher and ranker. Standard-library Python, no installs. |
 | `tests/` | Unit tests for the fetcher: `python3 -m unittest discover -s tests` |
-| `docs/` | The Jekyll site (minima theme). Briefs live in `docs/_posts/`. |
+| `docs/` | The Jekyll site. Briefs live in `docs/_posts/`, styling in `docs/assets/css/machine.css`. |
+| `.claude/skills/machine-design/` | The Machine design system spec, so future Claude sessions keep the look consistent. |
+
+## Design
+
+The site uses the [Machine](https://www.typeui.sh/design-skills/machine) design
+system from TypeUI: a dark blueprint monitor with navy screens, electric-blue
+grid borders, cyan mono readouts and coral stamps. Fonts (Space Grotesk,
+Manrope, Share Tech Mono) are self-hosted under the SIL Open Font License, so
+the site makes no third-party requests.
 
 ## Setup checklist
 

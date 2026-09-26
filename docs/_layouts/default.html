@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0E1530">
+  {% seo %}
+  {% feed_meta %}
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B1022'/%3E%3Cpath d='M7 13V7h6M25 13V7h-6M7 19v6h6M25 19v6h-6' stroke='%2352DCFF' stroke-width='2' fill='none'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23FF5A52'/%3E%3C/svg%3E">
+  <link rel="preload" href="{{ '/assets/fonts/share-tech-mono-latin-400-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ '/assets/fonts/space-grotesk-latin-wght-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ '/assets/css/machine.css' | relative_url }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {%- assign latest = site.posts.first %}
+  <header class="topbar">
+    <a class="brandmark" href="{{ '/' | relative_url }}" aria-label="NatSec Brief home">
+      <span class="brandmark__seal" aria-hidden="true">NS</span>
+      <span class="brandmark__name">NATSEC<span class="brandmark__slash">//</span>BRIEF</span>
+    </a>
+    <nav class="tabs" aria-label="Main">
+      {%- assign nav = "01|Latest|/,02|Archive|/archive/,03|About|/about/" | split: "," %}
+      {%- for entry in nav %}
+        {%- assign parts = entry | split: "|" %}
+        {%- assign active = false %}
+        {%- if page.url == parts[2] %}{% assign active = true %}{% endif %}
+        {%- if parts[2] == "/archive/" and page.layout == "post" %}{% assign active = true %}{% endif %}
+      <a class="tab{% if active %} is-active{% endif %}" href="{{ parts[2] | relative_url }}"{% if active %} aria-current="page"{% endif %}><span class="tab__code">{{ parts[0] }}</span>{{ parts[1] }}</a>
+      {%- endfor %}
+    </nav>
+    <p class="topbar__status">
+      <span class="signal" aria-hidden="true"></span>
+      {%- if latest %}
+      <span>SYNC {{ latest.date | date: "%b %-d %H:%M" | upcase }} ET</span>
+      {%- else %}
+      <span>STANDBY</span>
+      {%- endif %}
+    </p>
+  </header>
+
+  <main id="main" class="work">
+    {{ content }}
+  </main>
+
+  <footer class="console">
+    <p><span class="console__prompt">&gt;</span> natsec-brief :: {{ site.posts.size }} {% if site.posts.size == 1 %}brief{% else %}briefs{% endif %} on file :: open-source reporting only :: <a href="{{ '/feed.xml' | relative_url }}">rss</a><span class="console__cursor" aria-hidden="true"></span></p>
+  </footer>
+</body>
+</html>

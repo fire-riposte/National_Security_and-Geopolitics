@@ -1,0 +1,20 @@
+---
+layout: page
+title: Archive
+code: ARCHIVE
+permalink: /archive/
+---
+{%- if site.posts.size == 0 -%}
+<p class="muted">No briefs on file yet.</p>
+{%- else -%}
+<ol class="log log--full">
+  {%- for post in site.posts %}
+  <li class="log__item{% if forloop.first %} is-current{% endif %}">
+    <a href="{{ post.url | relative_url }}">
+      <span class="log__date">{{ post.date | date: "%Y-%m-%d" }} <span class="log__day">{{ post.date | date: "%a" | upcase }}</span></span>
+      <span class="log__title">{{ post.excerpt | strip_html | remove_first: "Bottom line:" | strip | truncate: 200 }}</span>
+    </a>
+  </li>
+  {%- endfor %}
+</ol>
+{%- endif -%}

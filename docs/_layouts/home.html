@@ -1,0 +1,43 @@
+---
+layout: default
+---
+{%- assign latest = site.posts.first %}
+<div class="grid-split">
+  <div class="grid-split__main">
+    {%- if latest %}
+    {% include brief.html post=latest body=latest.content label="LATEST TRANSMISSION" permalink=true %}
+    {%- else %}
+    <section class="panel">
+      <p class="label">SYS // STANDBY</p>
+      <h1 class="brief-head__title">No briefs on file yet.</h1>
+      <p class="readout"><span>NEXT RUN: WEEKDAYS 06:45 ET</span></p>
+    </section>
+    {%- endif %}
+  </div>
+
+  <aside class="grid-split__rail" aria-label="Recent briefs and schedule">
+    <section class="panel panel--rail">
+      <p class="label">LOG // RECENT</p>
+      <ol class="log">
+        {%- for post in site.posts limit: 8 %}
+        <li class="log__item{% if forloop.first %} is-current{% endif %}">
+          <a href="{{ post.url | relative_url }}"><span>{{ post.date | date: "%Y-%m-%d" }}</span><span class="log__day">{{ post.date | date: "%a" | upcase }}</span></a>
+        </li>
+        {%- else %}
+        <li class="log__item"><span class="log__empty">NO ENTRIES</span></li>
+        {%- endfor %}
+      </ol>
+      <a class="button button--ghost" href="{{ '/archive/' | relative_url }}">Full archive</a>
+    </section>
+
+    <section class="panel panel--rail">
+      <p class="label">SYS // SCHEDULE</p>
+      <dl class="readout-list">
+        <div><dt>CYCLE</dt><dd>MON-FRI</dd></div>
+        <div><dt>RUN</dt><dd>06:45 ET</dd></div>
+        <div><dt>FOCUS</dt><dd>ESPIONAGE · US MIL/IC · CHINA · RUSSIA · IRAN · DPRK</dd></div>
+        <div><dt>ON FILE</dt><dd>{{ site.posts.size }}</dd></div>
+      </dl>
+    </section>
+  </aside>
+</div>
