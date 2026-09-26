@@ -43,7 +43,10 @@ the site makes no third-party requests.
   session, open the environment menu in the title bar, choose Edit, set Network
   access to **Custom**, paste the list below (one per line), and keep **Also
   include default list of common package managers** checked.
-- [x] **Create the routine** (weekdays, 6:45am ET, Sonnet) with the prompt below.
+- [x] **Create the routine** (weekdays, 6:45am ET) with the prompt below.
+- [ ] **Finish the routine's settings** at claude.ai/code/routines: open
+  "NatSec Brief (weekdays)", choose Edit, add this repository, and pick Sonnet
+  as the model.
 - [ ] **Make `main` the default branch**: Settings > General > Default branch.
 - [ ] **Turn on GitHub Pages** when ready: Settings > Pages > Deploy from a
   branch > `main` / `/docs`. A private repo needs GitHub Pro for this, and the
