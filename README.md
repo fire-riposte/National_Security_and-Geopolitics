@@ -43,7 +43,8 @@ the site makes no third-party requests.
   session, open the environment menu in the title bar, choose Edit, set Network
   access to **Custom**, paste the list below (one per line), and keep **Also
   include default list of common package managers** checked.
-- [ ] **Create the routine** (weekdays, 6:45am ET) with the prompt below.
+- [x] **Create the routine** (weekdays, 6:45am ET, Sonnet) with the prompt below.
+- [ ] **Make `main` the default branch**: Settings > General > Default branch.
 - [ ] **Turn on GitHub Pages** when ready: Settings > Pages > Deploy from a
   branch > `main` / `/docs`. A private repo needs GitHub Pro for this, and the
   published site is public either way.
@@ -82,8 +83,12 @@ www.bbc.com
 ### Routine prompt
 
 ```text
-Produce today's NatSec Brief for this repository.
+Produce today's NatSec Brief for the GitHub repository
+fire-riposte/National_Security_and-Geopolitics.
 
+0. Work in a checkout of that repository's main branch. If this session doesn't
+   already have one, clone https://github.com/fire-riposte/National_Security_and-Geopolitics
+   and check out main.
 1. Follow BRIEFING.md in the repo root exactly.
 2. Commit only the new brief in docs/_posts/ with the message "Brief: YYYY-MM-DD"
    and push it to main (git push origin HEAD:main).

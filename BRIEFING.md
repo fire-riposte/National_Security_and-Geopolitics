@@ -7,6 +7,8 @@ what the brief covers or how it reads; the routine picks up changes on its next 
 
 1. Run `python3 scripts/fetch_feeds.py`, then read `build/candidates.md`. Its header
    gives the file name, front matter date, title date and coverage window to use.
+   If every feed failed, stop here: don't write a brief, and end by saying all
+   feeds failed (usually the cloud environment's allowed domains are missing).
 2. Pick the stories (see **What to cover**). Group items from different outlets
    about the same event into one story.
 3. When a snippet is too thin to write two accurate sentences, open the article.
