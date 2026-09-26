@@ -1,0 +1,249 @@
+# Sources and scoring for the NatSec Brief.
+#
+# scripts/fetch_feeds.py reads this file. Every domain a feed lives on must be
+# in the cloud environment's allowed domains, or the fetch fails with a 403.
+#
+# Feed fields:
+#   name         label shown in the candidate list
+#   url          RSS or Atom feed URL
+#   google_news  a Google News search query, used instead of url
+#   boost        added to every item's score; use it for feeds that are on-topic
+#                by nature, so their items survive even without keyword hits
+
+[scoring]
+min_score = 3         # items below this are dropped
+max_candidates = 120  # cap on how many items the brief writer reads
+
+# A group adds its weight once per item: the full weight for a hit in the
+# headline, half for a hit only in the snippet. ALL-CAPS terms match case
+# exactly (so "MSS" never matches "mss"); everything else ignores case.
+# A trailing * matches any word ending ("Iran*" matches "Iranian").
+
+[[scoring.groups]]
+name = "espionage"
+weight = 5
+terms = [
+  "espionage", "cyberespionage", "spy", "spies", "spying", "spymaster*",
+  "counterintelligence", "counter-intelligence", "intelligence officer*",
+  "intelligence service*", "intelligence agenc*", "foreign agent*", "FARA",
+  "defector*", "defected", "mole", "insider threat", "classified information",
+  "classified documents", "leaked", "leaker*", "transnational repression",
+  "sabotage", "saboteur*", "Ministry of State Security", "MSS",
+  "United Front", "GRU", "SVR", "FSB", "Unit 29155", "IRGC", "Quds Force",
+  "MOIS", "Reconnaissance General Bureau", "Lazarus Group", "Salt Typhoon",
+  "Volt Typhoon", "Flax Typhoon", "APT*", "state-sponsored hack*",
+  "state-backed hack*", "hacker*", "hacked", "hacking", "surveillance",
+  "undersea cable*", "security clearance*", "Havana syndrome",
+  "anomalous health incident*", "influence operation*", "covert",
+]
+
+[[scoring.groups]]
+name = "us-ic-military"
+weight = 3
+terms = [
+  "CIA", "NSA", "FBI", "DIA", "NGA", "NRO", "ODNI", "Director of National Intelligence",
+  "intelligence community", "National Security Council", "Pentagon",
+  "Department of Defense", "Defense Department", "Department of War",
+  "War Department", "Secretary of Defense", "Defense Secretary",
+  "Secretary of War", "War Secretary", "Joint Chiefs", "U.S. military",
+  "US military", "Army", "Navy", "Air Force", "Space Force", "Marine Corps",
+  "Coast Guard", "Cyber Command", "CYBERCOM", "INDOPACOM", "EUCOM", "CENTCOM",
+  "SOUTHCOM", "AFRICOM", "NORTHCOM", "SOCOM", "special operations",
+  "Golden Dome", "missile defense", "defense budget", "NDAA", "Section 702",
+  "FISA", "Intelligence Committee", "Armed Services Committee",
+]
+
+[[scoring.groups]]
+name = "adversaries"
+weight = 3
+terms = [
+  "China", "Chinese", "Beijing", "PRC", "PLA", "People's Liberation Army",
+  "CCP", "Chinese Communist Party", "Xi Jinping", "Taiwan*", "South China Sea",
+  "Russia", "Russian*", "Kremlin", "Moscow", "Putin", "Iran", "Iranian*",
+  "Tehran", "Khamenei", "North Korea*", "DPRK", "Pyongyang", "Kim Jong Un",
+  "Hezbollah", "Houthi*", "Africa Corps",
+]
+
+[[scoring.groups]]
+name = "competition"
+weight = 2
+terms = [
+  "export control*", "sanction*", "semiconductor*", "chipmaker*", "AI chip*",
+  "rare earth*", "critical mineral*", "hypersonic*", "nuclear weapon*",
+  "nuclear test*", "ICBM*", "submarine*", "AUKUS", "NATO", "Five Eyes",
+  "great power", "great-power", "strategic competition", "gray zone",
+  "grey zone", "Belt and Road", "arms control", "New START", "Arctic",
+  "anti-satellite", "satellite*", "Huawei", "Entity List", "CFIUS",
+  "disinformation", "Ukrain*",
+]
+
+[[scoring.groups]]
+name = "enforcement"
+weight = 1
+terms = [
+  "indict*", "charged", "arrested", "sentenced", "extradit*",
+  "pleaded guilty", "convicted", "expelled", "expulsion",
+]
+
+# ---------------------------------------------------------------------------
+# Espionage and intelligence reporting
+
+[[feeds]]
+name = "SpyTalk"
+url = "https://www.spytalk.co/feed"
+boost = 3
+
+[[feeds]]
+name = "The Cipher Brief"
+url = "https://www.thecipherbrief.com/feed"
+boost = 3
+
+[[feeds]]
+name = "The Record"
+url = "https://therecord.media/feed"
+boost = 1
+
+[[feeds]]
+name = "CyberScoop"
+url = "https://cyberscoop.com/feed/"
+boost = 1
+
+[[feeds]]
+name = "Lawfare"
+url = "https://www.lawfaremedia.org/feeds/articles"
+boost = 1
+
+[[feeds]]
+name = "Just Security"
+url = "https://www.justsecurity.org/feed/"
+boost = 1
+
+# Community-picked espionage articles. Only link posts are kept; the script
+# swaps in the article URL. Feeds the "Worth reading" section of the brief.
+[[feeds]]
+name = "Reddit r/espionage"
+url = "https://www.reddit.com/r/espionage/new/.rss?limit=50"
+boost = 3
+
+# ---------------------------------------------------------------------------
+# US government primary sources
+
+[[feeds]]
+name = "Justice Department"
+url = "https://www.justice.gov/news/rss?type=press_release&m=1"
+boost = 0
+
+[[feeds]]
+name = "FBI"
+url = "https://www.fbi.gov/feeds/national-press-releases/rss.xml"
+boost = 0
+
+[[feeds]]
+name = "ODNI"
+url = "https://www.dni.gov/index.php/newsroom/press-releases?format=feed&type=rss"
+boost = 1
+
+[[feeds]]
+name = "Department of War"
+url = "https://www.war.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=20"
+boost = 1
+
+# ---------------------------------------------------------------------------
+# Defense and military
+
+[[feeds]]
+name = "Defense One"
+url = "https://www.defenseone.com/rss/all/"
+boost = 1
+
+[[feeds]]
+name = "Breaking Defense"
+url = "https://breakingdefense.com/feed/"
+boost = 1
+
+[[feeds]]
+name = "DefenseScoop"
+url = "https://defensescoop.com/feed/"
+boost = 1
+
+[[feeds]]
+name = "USNI News"
+url = "https://news.usni.org/feed"
+boost = 1
+
+[[feeds]]
+name = "The War Zone"
+url = "https://www.twz.com/feed"
+boost = 1
+
+[[feeds]]
+name = "Defense News"
+url = "https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml"
+boost = 1
+
+# ---------------------------------------------------------------------------
+# Great-power competition and analysis
+
+[[feeds]]
+name = "War on the Rocks"
+url = "https://warontherocks.com/feed/"
+boost = 1
+
+[[feeds]]
+name = "The Diplomat"
+url = "https://thediplomat.com/feed/"
+boost = 0
+
+[[feeds]]
+name = "Jamestown Foundation"
+url = "https://jamestown.org/feed/"
+boost = 1
+
+[[feeds]]
+name = "Foreign Policy"
+url = "https://foreignpolicy.com/feed/"
+boost = 0
+
+[[feeds]]
+name = "Institute for the Study of War"
+url = "https://www.understandingwar.org/rss.xml"
+boost = 1
+
+[[feeds]]
+name = "CSIS"
+url = "https://www.csis.org/analysis/feed"
+boost = 1
+
+[[feeds]]
+name = "Atlantic Council"
+url = "https://www.atlanticcouncil.org/feed/"
+boost = 0
+
+# ---------------------------------------------------------------------------
+# Wires and general news. Reuters and AP have no public RSS feeds, so their
+# stories come in through Google News searches.
+
+[[feeds]]
+name = "Google News: espionage"
+google_news = "espionage OR spy OR counterintelligence when:2d"
+boost = 0
+
+[[feeds]]
+name = "Google News: US intelligence"
+google_news = "CIA OR NSA OR FBI OR \"intelligence community\" when:2d"
+boost = 0
+
+[[feeds]]
+name = "Google News: China military"
+google_news = "China (military OR PLA OR Taiwan OR hackers) when:2d"
+boost = 0
+
+[[feeds]]
+name = "Google News: Russia, Iran, North Korea"
+google_news = "(Russia OR Iran OR \"North Korea\") (military OR intelligence OR sanctions) when:2d"
+boost = 0
+
+[[feeds]]
+name = "BBC World"
+url = "https://feeds.bbci.co.uk/news/world/rss.xml"
+boost = 0

@@ -1,0 +1,10 @@
+title: NatSec Brief
+description: >-
+  Weekday summaries of news on US national security, espionage and
+  great-power competition. Written by Claude from public sources.
+theme: minima
+timezone: America/New_York
+permalink: /:year/:month/:day/
+show_excerpts: true
+header_pages:
+  - about.md
