@@ -14,8 +14,9 @@ what the brief covers or how it reads; the routine picks up changes on its next 
 3. When a snippet is too thin to write two accurate sentences, open the article.
    Google News and Reddit items come with a headline only, and Google News links
    are redirects that usually won't open, so search the headline with web search
-   instead. Look up at most 6 stories per run. If you can't confirm the details,
-   work from the headline alone or drop the story.
+   instead. Look up at most 6 stories per run (searches only to find a direct
+   link, per the Rules, don't count). If you can't confirm the details, work from
+   the headline alone or drop the story.
 4. Write the brief to the file named in the header, using the **Template**.
 5. Check the brief against the **Rules** below, then commit and push as the
    routine prompt says.
@@ -53,8 +54,14 @@ the section out if nothing qualifies.
 ## Rules
 
 - **Only report what the sources say.** Every story cites at least one link, and
-  every link must come from `build/candidates.md` or an article you opened.
-  Never write a URL from memory or guess one.
+  every link must come from `build/candidates.md`, an article you opened, or a
+  web search result. Never write a URL from memory or guess one.
+- **Link to the article itself, never a redirect.** Google News links
+  (`news.google.com/...`) are redirects, so they never go in the brief. For each
+  Google News item you use, including in Worth reading, search its headline and
+  outlet with web search and cite the publisher's own URL from the results. If
+  you can't find it, cite another outlet's direct link for the same story, or
+  drop the story.
 - **Attribute claims.** "Prosecutors allege", "according to the Pentagon",
   "Russian state media claimed". Flag a claim that rests only on adversary
   state media.
