@@ -249,7 +249,9 @@ def score(item: Item, groups, boost: int) -> None:
         if any(p.search(item.title) for p in patterns):
             total += weight
         elif any(p.search(item.summary) for p in patterns):
-            total += max(1, weight // 2)
+            # Half weight for a snippet-only hit, rounded away from zero so a
+            # small weight still counts (and a negative one still subtracts).
+            total += int(weight / 2) or (1 if weight > 0 else -1)
         else:
             continue
         item.matched.append(name)
@@ -316,7 +318,8 @@ def render(now, start, candidates, health, stats) -> str:
         f"- Feeds: {len(ok)} of {len(health)} fetched",
         f"- Items: {stats['fetched']} fetched, {stats['in_window']} in window, "
         f"{stats['seen']} already covered, {stats['low_score']} off-topic, "
-        f"{stats['dupes']} duplicates merged, {len(candidates)} candidates below",
+        f"{stats['capped']} over a feed's cap, {stats['dupes']} duplicates merged, "
+        f"{len(candidates)} candidates below",
         "",
     ]
     if failed:
@@ -356,25 +359,33 @@ def main(argv: list[str] | None = None) -> int:
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         results = list(pool.map(fetch, cfg["feeds"]))
 
-    stats = dict.fromkeys(("fetched", "in_window", "seen", "low_score", "dupes"), 0)
+    stats = dict.fromkeys(("fetched", "in_window", "seen", "low_score", "capped", "dupes"), 0)
     health = []
     by_title: dict[str, Item] = {}
     by_link: dict[str, Item] = {}
     for feed, items, undated, error in results:
         health.append((feed["name"], len(items), error))
         stats["fetched"] += len(items) + undated
+        kept = []
         for it in items:
             if not start <= it.published <= now + dt.timedelta(hours=1):
                 continue
             stats["in_window"] += 1
-            link_key = normalize_url(it.link)
-            if link_key in seen:
+            if normalize_url(it.link) in seen:
                 stats["seen"] += 1
                 continue
             score(it, groups, int(feed.get("boost", 0)))
             if it.score < min_score:
                 stats["low_score"] += 1
                 continue
+            kept.append(it)
+        # A per-feed cap stops broad searches from crowding out specialist outlets.
+        if "max_items" in feed:
+            kept.sort(key=lambda i: (-i.score, -i.published.timestamp()))
+            stats["capped"] += max(0, len(kept) - int(feed["max_items"]))
+            kept = kept[: int(feed["max_items"])]
+        for it in kept:
+            link_key = normalize_url(it.link)
             key = title_key(it.title)
             first = by_title.get(key) or by_link.get(link_key)
             if first:

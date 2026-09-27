@@ -9,10 +9,11 @@
 #   google_news  a Google News search query, used instead of url
 #   boost        added to every item's score; use it for feeds that are on-topic
 #                by nature, so their items survive even without keyword hits
+#   max_items    keep only this many of the feed's best-scoring items per run
 
 [scoring]
 min_score = 3         # items below this are dropped
-max_candidates = 120  # cap on how many items the brief writer reads
+max_candidates = 150  # cap on how many items the brief writer reads
 
 # A group adds its weight once per item: the full weight for a hit in the
 # headline, half for a hit only in the snippet. ALL-CAPS terms match case
@@ -75,6 +76,17 @@ terms = [
   "grey zone", "Belt and Road", "arms control", "New START", "Arctic",
   "anti-satellite", "satellite*", "Huawei", "Entity List", "CFIUS",
   "disinformation", "Ukrain*",
+]
+
+# Pushes down entertainment and market stories that match "spy" or "Russia".
+[[scoring.groups]]
+name = "noise"
+weight = -8
+terms = [
+  "thriller*", "movie", "movies", "film", "films", "Netflix", "Prime Video",
+  "Hulu", "streaming", "box office", "trailer", "TV series", "season finale",
+  "actor", "actress", "novel", "novels", "video game*", "ETF", "stocks",
+  "stock market", "S&P 500", "Nasdaq", "BATS", "chart image",
 ]
 
 [[scoring.groups]]
@@ -206,12 +218,12 @@ boost = 0
 
 [[feeds]]
 name = "Institute for the Study of War"
-url = "https://www.understandingwar.org/rss.xml"
+url = "https://understandingwar.org/feed/"
 boost = 1
 
 [[feeds]]
 name = "CSIS"
-url = "https://www.csis.org/analysis/feed"
+url = "https://www.csis.org/rss.xml"
 boost = 1
 
 [[feeds]]
@@ -221,27 +233,33 @@ boost = 0
 
 # ---------------------------------------------------------------------------
 # Wires and general news. Reuters and AP have no public RSS feeds, so their
-# stories come in through Google News searches.
+# stories come in through Google News searches. The searches use the same words
+# the scoring rewards, so each is capped to leave room for the specialist
+# outlets above.
 
 [[feeds]]
 name = "Google News: espionage"
-google_news = "espionage OR spy OR counterintelligence when:2d"
+google_news = "espionage OR spy OR counterintelligence -thriller -movie -film -netflix -stock when:2d"
 boost = 0
+max_items = 15
 
 [[feeds]]
 name = "Google News: US intelligence"
-google_news = "CIA OR NSA OR FBI OR \"intelligence community\" when:2d"
+google_news = "CIA OR NSA OR FBI OR \"intelligence community\" -thriller -movie -film when:2d"
 boost = 0
+max_items = 15
 
 [[feeds]]
 name = "Google News: China military"
 google_news = "China (military OR PLA OR Taiwan OR hackers) when:2d"
 boost = 0
+max_items = 15
 
 [[feeds]]
 name = "Google News: Russia, Iran, North Korea"
 google_news = "(Russia OR Iran OR \"North Korea\") (military OR intelligence OR sanctions) when:2d"
 boost = 0
+max_items = 15
 
 [[feeds]]
 name = "BBC World"

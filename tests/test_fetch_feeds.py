@@ -119,6 +119,18 @@ class ScoringTests(unittest.TestCase):
         ff.score(it, groups(), boost=1)
         self.assertEqual(it.score, 1 + 5 + 3)
 
+    def test_negative_groups_subtract_even_from_the_snippet(self):
+        g = ff.compile_groups([
+            {"name": "espionage", "weight": 5, "terms": ["spy"]},
+            {"name": "noise", "weight": -8, "terms": ["thriller*"]},
+        ])
+        headline = self.item("Spy thriller tops the charts")
+        ff.score(headline, g, boost=0)
+        self.assertEqual(headline.score, 5 - 8)
+        snippet = self.item("Spy drama", "A thriller")
+        ff.score(snippet, g, boost=0)
+        self.assertEqual(snippet.score, 5 - 4)
+
     def test_normalize_url_drops_tracking(self):
         self.assertEqual(
             ff.normalize_url("https://www.Example.com/a/?utm_source=x&id=2#frag"),
@@ -163,6 +175,41 @@ class EndToEndTests(unittest.TestCase):
             self.assertIn("Local bakery wins award", text)  # SpyTalk's boost keeps it
             self.assertNotIn("PLA drills near Taiwan", text)  # already cited in last brief
             self.assertIn("## Failed feeds", text)
+
+
+class FeedCapTests(unittest.TestCase):
+    def test_max_items_keeps_the_best_scoring_items(self):
+        rss = [b'<rss><channel>']
+        for n in range(5):
+            spy = b" spy" if n % 2 == 0 else b""
+            rss.append(b"<item><title>Story %d%s about China</title><link>https://example.com/%d</link>"
+                       b"<pubDate>Mon, 28 Sep 2026 0%d:00:00 GMT</pubDate></item>" % (n, spy, n, n))
+        rss.append(b"</channel></rss>")
+        data = b"".join(rss)
+
+        def fake_fetch(feed):
+            if feed["name"] == "Google News: espionage":
+                items, undated = ff.parse_feed(data, feed["name"])
+                return feed, items, undated, None
+            return feed, [], 0, "URLError: blocked"
+
+        cfg = {"scoring": {"min_score": 1, "max_candidates": 50, "groups": [
+                   {"name": "espionage", "weight": 5, "terms": ["spy"]},
+                   {"name": "adversaries", "weight": 3, "terms": ["China"]}]},
+               "feeds": [{"name": "Google News: espionage", "url": "x", "boost": 0, "max_items": 2}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "c.md"
+            with mock.patch.object(ff, "POSTS_DIR", Path(tmp)), mock.patch.object(ff, "fetch", fake_fetch), \
+                    mock.patch.object(ff.tomllib, "loads", return_value=cfg), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                ff.main(["--now", "2026-09-28T06:45:00-04:00", "--out", str(out)])
+            text = out.read_text()
+        # Stories 0, 2 and 4 mention spy (score 8); the cap keeps the two newest of them.
+        self.assertIn("Story 4 spy", text)
+        self.assertIn("Story 2 spy", text)
+        self.assertNotIn("Story 0 spy", text)
+        self.assertNotIn("Story 1 about", text)
+        self.assertIn("3 over a feed's cap", text)
 
 
 if __name__ == "__main__":
