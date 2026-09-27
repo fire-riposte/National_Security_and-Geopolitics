@@ -175,6 +175,8 @@ class EndToEndTests(unittest.TestCase):
             self.assertIn("Local bakery wins award", text)  # SpyTalk's boost keeps it
             self.assertNotIn("PLA drills near Taiwan", text)  # already cited in last brief
             self.assertIn("## Failed feeds", text)
+            self.assertIn("- SpyTalk: 3 fetched, 2 in window, 2 in candidates", text)
+            self.assertIn("- CyberScoop: FAILED URLError: blocked", text)
 
 
 class FeedCapTests(unittest.TestCase):

@@ -304,10 +304,17 @@ def fmt_et(d: dt.datetime) -> str:
     return d.astimezone(EASTERN).strftime("%a %b %d %H:%M ET")
 
 
+def health_line(h: dict) -> str:
+    if h["error"]:
+        return f"{h['name']}: FAILED {h['error']}"
+    return (f"{h['name']}: {h['fetched']} fetched, {h['in_window']} in window, "
+            f"{h['candidates']} in candidates")
+
+
 def render(now, start, candidates, health, stats) -> str:
     now_et = now.astimezone(EASTERN)
-    ok = [h for h in health if h[2] is None]
-    failed = [h for h in health if h[2] is not None]
+    ok = [h for h in health if not h["error"]]
+    failed = [h for h in health if h["error"]]
     lines = [
         "# Candidates for the NatSec Brief",
         "",
@@ -324,7 +331,7 @@ def render(now, start, candidates, health, stats) -> str:
     ]
     if failed:
         lines += ["## Failed feeds", ""]
-        lines += [f"- {name}: {err}" for name, _, err in failed]
+        lines += [f"- {h['name']}: {h['error']}" for h in failed]
         lines.append("")
     lines += ["## Candidates (highest score first)", ""]
     for n, it in enumerate(candidates, 1):
@@ -335,6 +342,8 @@ def render(now, start, candidates, health, stats) -> str:
         lines.append(f"   {it.link}")
         if it.summary:
             lines.append(f"   {it.summary}")
+    lines += ["", "## Feed health", ""]
+    lines += [f"- {health_line(h)}" for h in health]
     return "\n".join(lines) + "\n"
 
 
@@ -364,13 +373,16 @@ def main(argv: list[str] | None = None) -> int:
     by_title: dict[str, Item] = {}
     by_link: dict[str, Item] = {}
     for feed, items, undated, error in results:
-        health.append((feed["name"], len(items), error))
-        stats["fetched"] += len(items) + undated
+        h = {"name": feed["name"], "fetched": len(items) + undated, "in_window": 0,
+             "candidates": 0, "error": error}
+        health.append(h)
+        stats["fetched"] += h["fetched"]
         kept = []
         for it in items:
             if not start <= it.published <= now + dt.timedelta(hours=1):
                 continue
             stats["in_window"] += 1
+            h["in_window"] += 1
             if normalize_url(it.link) in seen:
                 stats["seen"] += 1
                 continue
@@ -403,16 +415,17 @@ def main(argv: list[str] | None = None) -> int:
 
     candidates = sorted(by_title.values(), key=lambda i: (-i.score, -i.published.timestamp()))
     candidates = candidates[: int(cfg["scoring"]["max_candidates"])]
+    for h in health:
+        h["candidates"] = sum(1 for it in candidates if it.feed == h["name"])
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(render(now, start, candidates, health, stats), encoding="utf-8")
 
-    failed = sum(1 for h in health if h[2])
+    failed = sum(1 for h in health if h["error"])
     print(f"{len(candidates)} candidates written to {args.out}")
     print(f"feeds: {len(health) - failed} ok, {failed} failed")
-    for name, _, err in health:
-        if err:
-            print(f"  FAILED {name}: {err}")
+    for h in health:
+        print(f"  {health_line(h)}")
     return 0 if failed < len(health) else 1
 
 
