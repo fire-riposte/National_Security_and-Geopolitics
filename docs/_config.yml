@@ -3,6 +3,9 @@ description: >-
   Weekday summaries of news on US national security, espionage and
   great-power competition. Written by Claude from public sources.
 timezone: America/New_York
+# The site lives at https://fire-riposte.github.io/National_Security_and-Geopolitics/
+# Update this if the repo is renamed or the site moves to a custom domain.
+baseurl: /National_Security_and-Geopolitics
 permalink: /:year/:month/:day/
 plugins:
   - jekyll-feed
