@@ -175,8 +175,16 @@ class EndToEndTests(unittest.TestCase):
             self.assertIn("Local bakery wins award", text)  # SpyTalk's boost keeps it
             self.assertNotIn("PLA drills near Taiwan", text)  # already cited in last brief
             self.assertIn("## Failed feeds", text)
-            self.assertIn("- SpyTalk: 3 fetched, 2 in window, 2 in candidates", text)
+            self.assertIn("- SpyTalk: 3 fetched, newest Mon Sep 28 06:00 ET, 2 in window, 2 in candidates", text)
             self.assertIn("- CyberScoop: FAILED URLError: blocked", text)
+
+
+class WindowTests(unittest.TestCase):
+    def test_first_run_on_monday_covers_the_weekend(self):
+        monday = dt.datetime(2026, 9, 28, 6, 45, tzinfo=ff.EASTERN)
+        self.assertEqual(ff.window_start(monday, []), monday - dt.timedelta(hours=72))
+        tuesday = monday + dt.timedelta(days=1)
+        self.assertEqual(ff.window_start(tuesday, []), tuesday - dt.timedelta(hours=24))
 
 
 class FeedCapTests(unittest.TestCase):

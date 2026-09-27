@@ -152,7 +152,7 @@ boost = 0
 
 [[feeds]]
 name = "ODNI"
-url = "https://www.dni.gov/index.php/newsroom/press-releases?format=feed&type=rss"
+url = "https://www.odni.gov/feed/"
 boost = 1
 
 [[feeds]]

@@ -284,7 +284,12 @@ def post_time(day: dt.date, path: Path) -> dt.datetime:
 
 
 def window_start(now: dt.datetime, posts: list[tuple[dt.date, Path]]) -> dt.datetime:
-    start = post_time(*posts[-1]) - WINDOW_OVERLAP if posts else now - FIRST_RUN_LOOKBACK
+    if posts:
+        start = post_time(*posts[-1]) - WINDOW_OVERLAP
+    elif now.astimezone(EASTERN).weekday() == 0:
+        start = now - dt.timedelta(hours=72)  # a first run on Monday covers the weekend
+    else:
+        start = now - FIRST_RUN_LOOKBACK
     return max(start, now - MAX_LOOKBACK)
 
 
@@ -307,7 +312,8 @@ def fmt_et(d: dt.datetime) -> str:
 def health_line(h: dict) -> str:
     if h["error"]:
         return f"{h['name']}: FAILED {h['error']}"
-    return (f"{h['name']}: {h['fetched']} fetched, {h['in_window']} in window, "
+    newest = f", newest {fmt_et(h['newest'])}" if h["newest"] else ""
+    return (f"{h['name']}: {h['fetched']} fetched{newest}, {h['in_window']} in window, "
             f"{h['candidates']} in candidates")
 
 
@@ -374,7 +380,8 @@ def main(argv: list[str] | None = None) -> int:
     by_link: dict[str, Item] = {}
     for feed, items, undated, error in results:
         h = {"name": feed["name"], "fetched": len(items) + undated, "in_window": 0,
-             "candidates": 0, "error": error}
+             "candidates": 0, "error": error,
+             "newest": max((it.published for it in items), default=None)}
         health.append(h)
         stats["fetched"] += h["fetched"]
         kept = []
