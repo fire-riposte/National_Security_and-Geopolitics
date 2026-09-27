@@ -1,0 +1,80 @@
+0 candidates written to /home/user/National_Security_and-Geopolitics/build/candidates.md
+feeds: 0 ok, 29 failed
+  FAILED SpyTalk: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED The Cipher Brief: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED The Record: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED CyberScoop: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Lawfare: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Just Security: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Reddit r/espionage: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Justice Department: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED FBI: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED ODNI: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Department of War: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Defense One: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Breaking Defense: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED DefenseScoop: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED USNI News: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED The War Zone: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Defense News: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED War on the Rocks: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED The Diplomat: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Jamestown Foundation: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Foreign Policy: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Institute for the Study of War: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED CSIS: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Atlantic Council: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Google News: espionage: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Google News: US intelligence: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Google News: China military: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED Google News: Russia, Iran, North Korea: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+  FAILED BBC World: URLError: <urlopen error Tunnel connection failed: 403 Forbidden>
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.021s
+
+OK
+
+## Suggested fixes
+
+Root cause check before trying alternate URLs: queried the sandbox's egress
+proxy status (curl -sS "$HTTPS_PROXY/__agentproxy/status") and its README
+(/root/.ccr/README.md) after seeing all 29 feeds fail with the identical
+error "Tunnel connection failed: 403 Forbidden".
+
+Finding: this is not a feed problem. The proxy's recentRelayFailures log
+shows every one of these hosts (www.dni.gov, www.war.gov, news.usni.org,
+defensescoop.com, breakingdefense.com, www.twz.com, www.defensenews.com,
+www.defenseone.com, warontherocks.com, thediplomat.com, jamestown.org,
+foreignpolicy.com, www.atlanticcouncil.org, www.csis.org,
+www.understandingwar.org, news.google.com, feeds.bbci.co.uk, and others)
+rejected at the CONNECT/tunnel stage with "gateway answered 403 to CONNECT
+(policy denial or upstream failure)" -- i.e. this sandbox's organization
+egress policy blocks these destination hosts outright, before any HTTP
+request (or path) is ever sent.
+
+Confirmed with a direct test against one host:
+  curl -sS -o /dev/null -w "%{http_code}" https://www.lawfaremedia.org/
+  curl -sS -o /dev/null -w "%{http_code}" https://www.lawfaremedia.org/feed
+Both attempts failed identically with "CONNECT tunnel failed, response 403",
+regardless of path. Since the block happens at the host level (before any
+URL path is considered), fetching homepages and probing /feed, /rss,
+/rss.xml, /feeds/all.rss etc. against the other 28 blocked hosts cannot
+produce a different result in this environment -- every attempt would just
+be another identical 403 from the egress gateway, not a signal about
+whether the feed URLs in feeds.toml are actually correct or dead.
+
+The proxy's own troubleshooting doc is explicit on this class of failure:
+"403 / 407 from the proxy: The destination host is not allowed by your
+organization's egress policy for this session. Do not retry or route
+around it -- report the blocked host." So no path-probing was performed
+against the 29 failed hosts; doing so would not have produced meaningful
+data and would run counter to that guidance.
+
+What this means for feeds.toml: no evidence here that any of the 29 feed
+URLs are broken or need changing. This whole run happened inside a sandbox
+whose network policy blocks essentially every external news/government/think-
+tank domain in feeds.toml. To actually validate these feed URLs, this script
+needs to run somewhere with unrestricted (or allowlisted) outbound HTTPS --
+e.g. the environment that runs the real daily brief -- rather than this
+diagnostic sandbox. No changes made to feeds.toml.
