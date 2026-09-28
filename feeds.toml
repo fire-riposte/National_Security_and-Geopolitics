@@ -83,10 +83,10 @@ terms = [
 name = "germany-israel"
 weight = 3
 terms = [
-  "Generalbundesanwalt", "GBA", "Bundeswehr", "German military", "German army",
-  "German armed forces", "BMVg", "Bundesverteidigungsminister*", "Wehrdienst",
-  "Wehrpflicht", "IDF", "Israel Defense Forces", "Israeli military",
-  "Israeli army", "Israeli Air Force", "Israeli Navy",
+  "Generalbundesanwalt", "Bundesanwaltschaft", "Bundeswehr", "German military",
+  "German army", "German armed forces", "BMVg", "Bundesverteidigungsminister*",
+  "Wehrdienst", "Wehrpflicht", "IDF", "Israel Defense Forces",
+  "Israeli military", "Israeli army", "Israeli Air Force", "Israeli Navy",
 ]
 
 [[scoring.groups]]
@@ -112,8 +112,8 @@ terms = [
   "thriller*", "movie", "movies", "film", "films", "Netflix", "Prime Video",
   "Hulu", "streaming", "box office", "trailer", "TV series", "season finale",
   "actor", "actress", "novel", "novels", "video game*", "ETF", "stocks",
-  "stock market", "S&P 500", "Nasdaq", "BATS", "chart image", "Vanguard",
-  "bond fund*", "expense ratio",
+  "stock market", "S&P 500", "Nasdaq", "BATS", "chart image", "bond fund*",
+  "expense ratio", "Total Bond Market",
 ]
 
 [[scoring.groups]]

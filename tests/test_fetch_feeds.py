@@ -3,6 +3,7 @@ import datetime as dt
 import io
 import sys
 import tempfile
+import tomllib
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -146,6 +147,37 @@ class FeedUrlTests(unittest.TestCase):
     def test_google_news_locale(self):
         url = ff.feed_url({"google_news": "Spionage", "locale": "de-DE"})
         self.assertIn("hl=de-DE&gl=DE&ceid=DE%3Ade", url)
+
+
+# Checks against the real feeds.toml, for terms with more than one meaning.
+class ConfigTermTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cfg = tomllib.loads(ff.CONFIG.read_text(encoding="utf-8"))
+        cls.groups = ff.compile_groups(cfg["scoring"]["groups"])
+        cls.min_score = int(cfg["scoring"]["min_score"])
+
+    def scored(self, title):
+        it = ff.Item(title, "https://x", dt.datetime.now(dt.timezone.utc), "", "Feed")
+        ff.score(it, self.groups, boost=0)
+        return it
+
+    def test_bnd_bond_fund_is_noise(self):
+        it = self.scored("Vanguard Total Bond Market (BND) yield climbs")
+        self.assertIn("noise", it.matched)
+        self.assertLess(it.score, self.min_score)
+
+    def test_uk_vanguard_submarines_are_not_noise(self):
+        it = self.scored("HMS Vanguard returns from record Trident patrol")
+        self.assertNotIn("noise", it.matched)
+
+    def test_gba_is_not_the_federal_prosecutor(self):
+        it = self.scored("Nintendo brings GBA classics to Switch Online")
+        self.assertNotIn("germany-israel", it.matched)
+
+    def test_federal_prosecutor(self):
+        it = self.scored("Bundesanwaltschaft erhebt Anklage gegen mutmaßlichen Spion")
+        self.assertIn("germany-israel", it.matched)
 
 
 class EndToEndTests(unittest.TestCase):
