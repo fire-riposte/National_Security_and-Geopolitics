@@ -138,6 +138,16 @@ class ScoringTests(unittest.TestCase):
         )
 
 
+class FeedUrlTests(unittest.TestCase):
+    def test_google_news_defaults_to_us_english(self):
+        url = ff.feed_url({"google_news": "spy"})
+        self.assertIn("hl=en-US&gl=US&ceid=US%3Aen", url)
+
+    def test_google_news_locale(self):
+        url = ff.feed_url({"google_news": "Spionage", "locale": "de-DE"})
+        self.assertIn("hl=de-DE&gl=DE&ceid=DE%3Ade", url)
+
+
 class EndToEndTests(unittest.TestCase):
     def test_window_seen_links_and_dedupe(self):
         with tempfile.TemporaryDirectory() as tmp:
