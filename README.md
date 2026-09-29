@@ -45,7 +45,7 @@ the site makes no third-party requests.
   session, open the environment menu in the title bar, choose Edit, set Network
   access to **Custom**, paste the list below (one per line), and keep **Also
   include default list of common package managers** checked.
-- [ ] **Allow the Germany and Israel feed domains**: add the last 7 lines of the
+- [x] **Allow the Germany and Israel feed domains**: add the last 7 lines of the
   list below (from `www.presseportal.de` down) to the same environment. Until
   then those feeds fail with a 403 and show up under failed feeds.
 - [x] **Create the routine** (weekdays, 6:45am ET) with the prompt below.
