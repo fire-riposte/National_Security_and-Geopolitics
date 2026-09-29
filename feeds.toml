@@ -10,6 +10,8 @@
 #   boost        added to every item's score; use it for feeds that are on-topic
 #                by nature, so their items survive even without keyword hits
 #   max_items    keep only this many of the feed's best-scoring items per run
+#   locale       Google News edition as language-COUNTRY, e.g. "de-DE";
+#                defaults to "en-US"
 
 [scoring]
 min_score = 3         # items below this are dropped
@@ -36,6 +38,14 @@ terms = [
   "state-backed hack*", "hacker*", "hacked", "hacking", "surveillance",
   "undersea cable*", "security clearance*", "Havana syndrome",
   "anomalous health incident*", "influence operation*", "covert",
+  # German and Israeli services
+  "BND", "Bundesnachrichtendienst", "German intelligence", "Verfassungsschutz",
+  "BfV", "Militärischer Abschirmdienst", "BAMAD", "Mossad", "Shin Bet",
+  "Shabak", "Unit 8200", "Military Intelligence Directorate",
+  "Israeli intelligence",
+  # German terms, for the German-language feeds
+  "Spion*", "Cyberspionage", "Agententätigkeit", "geheimdienstlich*",
+  "Geheimdienst*", "Nachrichtendienst*", "Landesverrat", "Einflussoperation*",
 ]
 
 [[scoring.groups]]
@@ -63,6 +73,20 @@ terms = [
   "Russia", "Russian*", "Kremlin", "Moscow", "Putin", "Iran", "Iranian*",
   "Tehran", "Khamenei", "North Korea*", "DPRK", "Pyongyang", "Kim Jong Un",
   "Hezbollah", "Houthi*", "Africa Corps",
+  "Russland", "russisch*", "Kreml", "chinesisch*", "Peking", "iranisch*",
+  "Nordkorea*",
+]
+
+# German and Israeli militaries, and Germany's federal prosecutor. Their
+# intelligence services are in the espionage group.
+[[scoring.groups]]
+name = "germany-israel"
+weight = 3
+terms = [
+  "Generalbundesanwalt", "Bundesanwaltschaft", "Bundeswehr", "German military",
+  "German army", "German armed forces", "BMVg", "Bundesverteidigungsminister*",
+  "Wehrdienst", "Wehrpflicht", "IDF", "Israel Defense Forces",
+  "Israeli military", "Israeli army", "Israeli Air Force", "Israeli Navy",
 ]
 
 [[scoring.groups]]
@@ -75,10 +99,12 @@ terms = [
   "great power", "great-power", "strategic competition", "gray zone",
   "grey zone", "Belt and Road", "arms control", "New START", "Arctic",
   "anti-satellite", "satellite*", "Huawei", "Entity List", "CFIUS",
-  "disinformation", "Ukrain*",
+  "disinformation", "Ukrain*", "Sanktion*", "Desinformation",
+  "hybride Bedrohung*",
 ]
 
-# Pushes down entertainment and market stories that match "spy" or "Russia".
+# Pushes down entertainment and market stories that match "spy", "Russia" or
+# "BND" (also a Vanguard bond ETF ticker).
 [[scoring.groups]]
 name = "noise"
 weight = -8
@@ -86,7 +112,8 @@ terms = [
   "thriller*", "movie", "movies", "film", "films", "Netflix", "Prime Video",
   "Hulu", "streaming", "box office", "trailer", "TV series", "season finale",
   "actor", "actress", "novel", "novels", "video game*", "ETF", "stocks",
-  "stock market", "S&P 500", "Nasdaq", "BATS", "chart image",
+  "stock market", "S&P 500", "Nasdaq", "BATS", "chart image", "bond fund*",
+  "expense ratio", "Total Bond Market",
 ]
 
 [[scoring.groups]]
@@ -95,6 +122,8 @@ weight = 1
 terms = [
   "indict*", "charged", "arrested", "sentenced", "extradit*",
   "pleaded guilty", "convicted", "expelled", "expulsion",
+  "Festnahme*", "festgenommen", "Anklage", "angeklagt", "Haftbefehl*",
+  "verurteilt",
 ]
 
 # ---------------------------------------------------------------------------
@@ -230,6 +259,78 @@ boost = 1
 name = "Atlantic Council"
 url = "https://www.atlanticcouncil.org/feed/"
 boost = 0
+
+# ---------------------------------------------------------------------------
+# Germany. Most of these are in German; they score through the German terms
+# in the groups above.
+
+# The Federal Prosecutor General brings every German espionage and sabotage
+# case. It has no RSS of its own and publishes through Presseportal.
+[[feeds]]
+name = "Federal Prosecutor (GBA)"
+url = "https://www.presseportal.de/rss/dienststelle_14981.rss2"
+boost = 2
+
+[[feeds]]
+name = "BfV (Verfassungsschutz)"
+url = "https://www.verfassungsschutz.de/SiteGlobals/Functions/RSSNewsFeed/AlleMeldungen.xml"
+boost = 2
+
+[[feeds]]
+name = "Augen geradeaus!"
+url = "https://augengeradeaus.net/feed/"
+boost = 2
+
+[[feeds]]
+name = "Google News (DE): Spionage"
+google_news = "Spionage OR Spion OR BND OR Verfassungsschutz OR \"Militärischer Abschirmdienst\" OR Sabotage when:2d"
+locale = "de-DE"
+boost = 0
+max_items = 10
+
+[[feeds]]
+name = "Google News (DE): Bundeswehr"
+google_news = "Bundeswehr OR BMVg OR Pistorius when:1d"
+locale = "de-DE"
+boost = 0
+max_items = 10
+
+[[feeds]]
+name = "Google News: Germany"
+google_news = "Bundesnachrichtendienst OR \"German intelligence\" OR Verfassungsschutz OR Bundeswehr OR \"German military\" -ETF -Vanguard when:2d"
+boost = 0
+max_items = 10
+
+# ---------------------------------------------------------------------------
+# Israel
+
+[[feeds]]
+name = "Times of Israel"
+url = "https://www.timesofisrael.com/feed/"
+boost = 0
+max_items = 15
+
+[[feeds]]
+name = "Haaretz"
+url = "https://www.haaretz.com/srv/haaretz-latest-headlines"
+boost = 0
+max_items = 15
+
+[[feeds]]
+name = "Alma Center"
+url = "https://israel-alma.org/feed/"
+boost = 1
+
+[[feeds]]
+name = "INSS"
+url = "https://www.inss.org.il/publication/feed/"
+boost = 1
+
+[[feeds]]
+name = "Google News: Israeli intelligence"
+google_news = "Mossad OR \"Shin Bet\" OR \"Unit 8200\" OR \"Israeli intelligence\" OR \"Israeli military intelligence\" when:2d"
+boost = 0
+max_items = 15
 
 # ---------------------------------------------------------------------------
 # Wires and general news. Reuters and AP have no public RSS feeds, so their

@@ -189,8 +189,10 @@ def parse_feed(data: bytes, feed_name: str) -> tuple[list[Item], int]:
 
 def feed_url(feed: dict) -> str:
     if "google_news" in feed:
+        lang, country = feed.get("locale", "en-US").split("-")
         query = urllib.parse.urlencode(
-            {"q": feed["google_news"], "hl": "en-US", "gl": "US", "ceid": "US:en"}
+            {"q": feed["google_news"], "hl": f"{lang}-{country}", "gl": country,
+             "ceid": f"{country}:{lang}"}
         )
         return f"https://news.google.com/rss/search?{query}"
     return feed["url"]

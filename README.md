@@ -1,9 +1,10 @@
 # NatSec Brief
 
 A weekday news brief on US national security, espionage and great-power
-competition. A Claude Code routine runs every weekday morning, reads about 30
-news feeds, picks the stories that matter, and commits a short sourced summary
-to this repo. The `docs/` folder is a Jekyll site, ready for GitHub Pages.
+competition, plus German and Israeli intelligence and military news. A Claude
+Code routine runs every weekday morning, reads about 40 news feeds (some in
+German), picks the stories that matter, and commits a short sourced summary
+in English to this repo. The `docs/` folder is a Jekyll site, ready for GitHub Pages.
 
 ## How it works
 
@@ -13,8 +14,9 @@ to this repo. The `docs/` folder is a Jekyll site, ready for GitHub Pages.
    published since the last brief, drops links already cited in the past ten
    days, scores each story against the keyword groups, merges duplicates, and
    writes a ranked list to `build/candidates.md`.
-3. **Claude** follows `BRIEFING.md`: it picks 8 to 12 stories, checks thin ones,
-   and writes `docs/_posts/YYYY-MM-DD-brief.md` with a link for every claim.
+3. **Claude** follows `BRIEFING.md`: it picks 8 to 12 stories (plus up to 4 on
+   Germany and Israel), checks thin ones, and writes
+   `docs/_posts/YYYY-MM-DD-brief.md` with a link for every claim.
 4. The brief is committed and pushed to `main`. With Pages on, the site
    rebuilds on its own.
 
@@ -43,6 +45,9 @@ the site makes no third-party requests.
   session, open the environment menu in the title bar, choose Edit, set Network
   access to **Custom**, paste the list below (one per line), and keep **Also
   include default list of common package managers** checked.
+- [ ] **Allow the Germany and Israel feed domains**: add the last 7 lines of the
+  list below (from `www.presseportal.de` down) to the same environment. Until
+  then those feeds fail with a 403 and show up under failed feeds.
 - [x] **Create the routine** (weekdays, 6:45am ET) with the prompt below.
 - [x] **Finish the routine's settings** at claude.ai/code/routines: open
   "NatSec Brief (weekdays)", choose Edit, add this repository, and pick Sonnet
@@ -83,6 +88,13 @@ www.atlanticcouncil.org
 news.google.com
 feeds.bbci.co.uk
 www.bbc.com
+www.presseportal.de
+www.verfassungsschutz.de
+augengeradeaus.net
+www.timesofisrael.com
+www.haaretz.com
+israel-alma.org
+www.inss.org.il
 ```
 
 ### Routine prompt
