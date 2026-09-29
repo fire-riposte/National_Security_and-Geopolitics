@@ -1,0 +1,523 @@
+{
+  "framework": {
+    "title": "Xi Jinping's Taiwan Dashboard",
+    "author": "Gregory J. Moore",
+    "venue": "Journal of Indo-Pacific Affairs, Spring 2025",
+    "url": "https://www.airuniversity.af.edu/JIPA/Display/Article/4168508/xi-jinpings-taiwan-dashboard-considering-xis-calculus-for-a-possible-move-on-ta/"
+  },
+  "midnight": "The PLA begins a major use of force against Taiwan: an invasion, or a blockade enforced by fire.",
+  "as_of": "2026-09-28",
+  "as_of_label": "Sept 28, 2026",
+  "summary": "Beijing's motive to move early has faded since Moore wrote. Warming relations with Washington, a frozen US arms package, a purged high command and a plausible KMT comeback all give Xi reasons to wait. The one dial pointing harder at 'now' is the US munitions drain from the Iran war. Observable preparation stays low. Midnight on this clock is a PLA invasion or a blockade enforced by fire.",
+  "current": {
+    "minutes": 35,
+    "motive": 0.519,
+    "preparation": 0.333,
+    "sooner": 7,
+    "later": 5,
+    "neutral": 1
+  },
+  "dials": [
+    {
+      "id": "d01",
+      "assessment": "The January 2026 investigations of CMC Vice Chair Zhang Youxia and Joint Staff chief Liu Zhenli removed the PLA's senior operational commanders; Xi has now purged five of the six CMC members he picked in 2022. The 2026 ODNI threat assessment says Beijing has no fixed timetable and sees an amphibious assault as highly risky. More reason to wait than Moore saw.",
+      "moore": "-",
+      "n": 1,
+      "name": "PLA preparedness",
+      "reading": -2,
+      "sources": [
+        {
+          "title": "CSIS: Assessing Xi's purges",
+          "url": "https://csis-website-prod.s3.amazonaws.com/s3fs-public/2026-02/260224_Lin_Xi_Purges.pdf"
+        },
+        {
+          "title": "Lowy Interpreter",
+          "url": "https://www.lowyinstitute.org/the-interpreter/xi-s-military-purges-will-make-him-wary-invading-taiwan"
+        },
+        {
+          "title": "Asia Times on 2026 ATA",
+          "url": "https://asiatimes.com/2026/03/us-intel-doubts-china-will-invade-taiwan-in-2027/"
+        }
+      ],
+      "trend": "easing",
+      "updated": "2026-09-28",
+      "window": "opening"
+    },
+    {
+      "id": "d02",
+      "assessment": "Q2 2026 GDP grew 4.3%, the weakest quarter since late 2022, with fixed-asset investment down 5.7% in the first half. Exports are strong (+17.6% H1) and the GDP deflator turned positive for the first time in 12 quarters. Weak, but not in crisis: still a mild reason for caution.",
+      "moore": "-",
+      "n": 2,
+      "name": "China's struggling economy",
+      "reading": -1,
+      "sources": [
+        {
+          "title": "CNBC: Q2 GDP",
+          "url": "https://www.cnbc.com/2026/07/15/china-gdp-retail-sales-investment-june-.html"
+        },
+        {
+          "title": "Econbrowser: alt. estimates",
+          "url": "https://econbrowser.com/archives/2026/07/estimates-of-q2-chinese-gdp"
+        }
+      ],
+      "trend": "steady",
+      "updated": "2026-09-28",
+      "window": "opening"
+    },
+    {
+      "id": "d03",
+      "assessment": "NCCU's December 2025 survey: 62.0% Taiwanese only, 2.5% Chinese only, 31.7% both. The drift Moore described has plateaued since the 2020 peak of 64.3%. Still a closing window, but it is not accelerating.",
+      "moore": "+",
+      "n": 3,
+      "name": "Taiwan's identity drifting from the mainland",
+      "reading": 1,
+      "sources": [
+        {
+          "title": "NCCU Election Study Center",
+          "url": "https://esc.nccu.edu.tw/PageDoc/Detail?fid=7802&id=6961"
+        },
+        {
+          "title": "Polling series",
+          "url": "https://en.wikipedia.org/wiki/Opinion_polling_on_Taiwanese_identity"
+        }
+      ],
+      "trend": "steady",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d04",
+      "assessment": "Births fell 17% to 7.92 million in 2025, the lowest since 1949; population fell 3.39 million, a fourth straight year of decline. The trend is steeper than Moore assumed, though as he notes it bites on a 7 to 20 year horizon, not the next two.",
+      "moore": "+",
+      "n": 4,
+      "name": "China's demographic decline",
+      "reading": 1,
+      "sources": [
+        {
+          "title": "Caixin",
+          "url": "https://www.caixinglobal.com/2026-01-19/chinas-population-decline-accelerates-as-births-hit-modern-era-low-in-2025-102405521.html"
+        },
+        {
+          "title": "CNBC",
+          "url": "https://www.cnbc.com/2026/01/19/china-birthrate-record-low-aging-population-fertility-crisis.html"
+        }
+      ],
+      "trend": "rising",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d05",
+      "assessment": "TSMC Arizona's second fab targets 3nm volume production in 2H 2027, and TSMC says about 30% of its 2nm-and-below capacity will eventually sit in the US. Taiwan remains irreplaceable today, but the diversification Moore predicted is arriving on roughly his two-to-three-year schedule.",
+      "moore": "+",
+      "n": 5,
+      "name": "Importance of Taiwan's chip industry",
+      "reading": 1,
+      "sources": [
+        {
+          "title": "TSMC Arizona milestones",
+          "url": "https://www.tsmc.com/static/abouttsmcaz/index.htm"
+        },
+        {
+          "title": "TrendForce",
+          "url": "https://www.trendforce.com/news/2026/04/16/news-tsmc-n3-tightens-on-ai-demand-arizona-2nd-fab-3nm-volume-production-in-2h27-kumamoto-in-2028/"
+        }
+      ],
+      "trend": "rising",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d06",
+      "assessment": "Washington licensed H200 sales in January 2026, then Beijing told firms to boycott them and customs blocked imports, favoring domestic silicon. Tool and HBM chokepoints remain, so the squeeze is real, but US loosening and China's self-reliance push both reduce the pull toward seizing TSMC.",
+      "moore": "+",
+      "n": 6,
+      "name": "Chips' growing importance to China",
+      "reading": 1,
+      "sources": [
+        {
+          "title": "Model Diplomacy on BIS rule",
+          "url": "https://modeldiplomat.com/story/us-chip-export-curbs-impact-nvidia-in-china"
+        },
+        {
+          "title": "Nvidia 10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000075/nvda-20260726.htm"
+        }
+      ],
+      "trend": "easing",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d07",
+      "assessment": "An $11B package was approved in December 2025, but a $14B package has been frozen since the May Beijing summit, and Trump has called arms sales 'a very good negotiating chip.' Under Moore's logic, a commitment that is not deepening removes the urgency: waiting may win Beijing more concessions. This dial has flipped.",
+      "moore": "+",
+      "n": 7,
+      "name": "Growing US commitment to Taiwan",
+      "reading": -1,
+      "sources": [
+        {
+          "title": "GTI on May summit",
+          "url": "https://globaltaiwan.org/2026/05/how-taiwan-fared-during-the-trump-xi-summit/"
+        },
+        {
+          "title": "Washington Times, Sep 28",
+          "url": "https://www.washingtontimes.com/news/2026/sep/28/donald-trump-denies-offering-sell-us-arms-china-xi-jinping-summit/"
+        },
+        {
+          "title": "Modern Diplomacy",
+          "url": "https://moderndiplomacy.eu/2026/09/28/taiwan-arms-sales-freeze-xi-trump-summits-1982-communique/"
+        }
+      ],
+      "trend": "easing",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d08",
+      "assessment": "The FY26 NDAA authorizes $1B for the Taiwan Security Cooperation Initiative, a Taiwan-contingency interoperability study and Coast Guard training; Taiwanese marines reportedly trained on Guam. The RIMPAC invitation was cut. Integration is growing slowly, so the gap Moore flagged is still open but narrowing.",
+      "moore": "+",
+      "n": 8,
+      "name": "US-Taiwan exercises and interoperability",
+      "reading": 1,
+      "sources": [
+        {
+          "title": "Taiwan Security Monitor on FY26 NDAA",
+          "url": "https://tsm.schar.gmu.edu/what-does-the-fy26-ndaa-mean-for-taiwan/"
+        },
+        {
+          "title": "Pacific Island Times",
+          "url": "https://www.pacificislandtimes.com/post/ndaa26-authorizes-1-billion-to-bolster-taiwan-defense"
+        }
+      ],
+      "trend": "steady",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d09",
+      "assessment": "The 2026 Iran war reportedly consumed up to three-fifths of US Patriot stocks, up to half of THAAD stocks and around 1,000 Tomahawks; some officials assess the US could not fully execute Taiwan contingency plans near-term. China's relative missile advantage is wider now than when Moore wrote. Replenishment will take years.",
+      "moore": "+",
+      "n": 9,
+      "name": "China's anti-ship and hypersonic edge",
+      "reading": 2,
+      "sources": [
+        {
+          "title": "Atlantic Council",
+          "url": "https://www.atlanticcouncil.org/dispatches/what-shrinking-us-missile-stocks-means-for-allies-and-adversaries-around-the-world/"
+        },
+        {
+          "title": "CSIS",
+          "url": "https://www.csis.org/analysis/united-states-prepared-war-china"
+        },
+        {
+          "title": "Spokesman-Review (WaPo)",
+          "url": "https://www.spokesman.com/stories/2026/aug/26/us-weapons-shortage-from-iran-war-alarms-allies-co/"
+        }
+      ],
+      "trend": "rising",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d10",
+      "assessment": "The first Dark Eagle battery began receiving operational missiles in spring 2026, though DOT&E says effectiveness data is insufficient. The Glide Phase Interceptor is unlikely before about 2035. The offensive gap is starting to close; the defensive gap is not.",
+      "moore": "+",
+      "n": 10,
+      "name": "US hypersonic weapons and defenses",
+      "reading": 1,
+      "sources": [
+        {
+          "title": "CRS: LRHW",
+          "url": "https://www.congress.gov/crs-product/IF11991"
+        },
+        {
+          "title": "GPI",
+          "url": "https://en.wikipedia.org/wiki/Glide_Phase_Interceptor"
+        }
+      ],
+      "trend": "steady",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d11",
+      "assessment": "Relations have warmed: a Beijing summit in May, Xi's Washington state visit Sept 23-25, a trade truce under extension, and two more meetings planned at APEC and G20. Moore's dial says good relations raise the cost of going. This dial has flipped hard since 2025.",
+      "moore": "+",
+      "n": 11,
+      "name": "State of US-China relations",
+      "reading": -2,
+      "sources": [
+        {
+          "title": "CNBC summit analysis",
+          "url": "https://www.cnbc.com/2026/09/28/trump-xi-summit-tangible-outcomes-us-china-truce.html"
+        },
+        {
+          "title": "Semafor",
+          "url": "https://www.semafor.com/article/09/25/2026/xis-visit-to-washington-wraps-with-little-changed"
+        }
+      ],
+      "trend": "easing",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d12",
+      "assessment": "The 'containment, encirclement and suppression' framing of 2023 has given way to a transactional channel where Taiwan arms sales are discussed at every summit. Beijing still presses Washington to oppose independence, but it likely sees less US hostility and more room to get what it wants without force.",
+      "moore": "+",
+      "n": 12,
+      "name": "Xi's view of US intentions",
+      "reading": -1,
+      "sources": [
+        {
+          "title": "Al Jazeera takeaways",
+          "url": "https://www.aljazeera.com/news/2026/9/24/trump-xi-summit-four-key-takeaways-from-the-washington-dc-meeting"
+        },
+        {
+          "title": "Bloomberg (Perdue)",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/us-policy-stance-on-taiwan-unchanged-after-xi-visit-perdue-says"
+        }
+      ],
+      "trend": "easing",
+      "updated": "2026-09-28",
+      "window": "closing"
+    },
+    {
+      "id": "d13",
+      "assessment": "Lai and the DPP govern until 2028, but the KMT under Cheng Li-wun embraces the 1992 Consensus, has met Xi, and won every 2025 recall vote. Lai's approval is near even. A plausible KMT path in 2028 gives Beijing a political option Moore did not see. Watch the Nov 28 local elections.",
+      "moore": "+",
+      "n": 13,
+      "name": "Taiwan politics under a DPP government",
+      "reading": 0,
+      "sources": [
+        {
+          "title": "Kharis Templeman preview",
+          "url": "https://www.kharistempleman.com/blog/taiwan-2026-local-elections-preview-5-wrap-up"
+        },
+        {
+          "title": "Taipei Times",
+          "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/08/16/2003862577"
+        }
+      ],
+      "trend": "easing",
+      "updated": "2026-09-28",
+      "window": "closing"
+    }
+  ],
+  "iw": [
+    {
+      "id": "i1",
+      "assessment": "PLA aircraft in Taiwan's ADIZ fell 52% (Jan 1 to Aug 9, 2026 vs 2025), the lowest since 2022, while warship presence stayed steady. Daily activity continues at a lower, more selective tempo.",
+      "level": 1,
+      "name": "PLA air and naval pressure",
+      "order": 1,
+      "sources": [
+        {
+          "title": "Global Military",
+          "url": "https://www.globalmilitary.net/news/pla-air-activity-around-taiwan-halved-in-2026/"
+        },
+        {
+          "title": "AEI update, Aug 7",
+          "url": "https://www.aei.org/commentary/china-taiwan-update-august-7-2026/"
+        }
+      ],
+      "updated": "2026-09-28"
+    },
+    {
+      "id": "i2",
+      "assessment": "Justice Mission 2025 (Dec 29-30) rehearsed a full blockade over the largest area yet. No large-scale drill was staged in the first half of 2026, the first such gap since 2022.",
+      "level": 1,
+      "name": "Large-scale drills around Taiwan",
+      "order": 2,
+      "sources": [
+        {
+          "title": "SCMP on H1 2026 lull",
+          "url": "https://www.scmp.com/news/china/military/article/3361605/why-pla-fighter-jet-sorties-near-taiwan-dropped-3-year-low-first-half-2026"
+        },
+        {
+          "title": "The Diplomat",
+          "url": "https://thediplomat.com/2026/01/chinas-taiwan-drills-are-crossing-a-new-line/"
+        }
+      ],
+      "updated": "2026-09-28"
+    },
+    {
+      "id": "i3",
+      "assessment": "Capability build-out continues: Shuiqiao landing barges, the Type 076, and 76 dual-use ro-ro ferries built 2023-2026 that rehearse with the PLA. No reporting of ferries being pulled from commercial service or massing at embarkation ports.",
+      "level": 1,
+      "name": "Amphibious lift and sealift",
+      "order": 3,
+      "sources": [
+        {
+          "title": "Taipei Times: MND report",
+          "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/09/02/2003863545"
+        },
+        {
+          "title": "CIMSEC",
+          "url": "https://cimsec.org/china-is-rehearsing-more-than-amphibious-landings/"
+        }
+      ],
+      "updated": "2026-09-28"
+    },
+    {
+      "id": "i4",
+      "assessment": "China holds roughly 1.2 billion barrels of crude and the EIA expected about 1M bpd more stockpiling in 2026, plus record grain reserves. Analysts call this a strategic warning indicator, though the Iran-war fuel crisis gives a benign explanation.",
+      "level": 2,
+      "name": "Strategic stockpiling",
+      "order": 4,
+      "sources": [
+        {
+          "title": "John Kemp",
+          "url": "https://jkempenergy.com/2026/02/15/chinas-oil-stocks-and-readiness-for-war/"
+        },
+        {
+          "title": "Al Jazeera",
+          "url": "https://www.aljazeera.com/news/2026/4/3/how-chinas-teapot-refineries-are-cushioning-it-from-iran-war-oil-crisis"
+        }
+      ],
+      "updated": "2026-09-28"
+    },
+    {
+      "id": "i5",
+      "assessment": "Beijing has shifted pressure from aircraft toward coast guard patrols near Taiwan, and the Guangdong MSA announced new Strait traffic control measures in August. This is the path a quarantine would take; watch for boarding or inspection of Taiwan-bound shipping.",
+      "level": 1,
+      "name": "Coast guard and gray-zone moves",
+      "order": 5,
+      "sources": [
+        {
+          "title": "AEI update, Aug 14",
+          "url": "https://www.aei.org/commentary/china-taiwan-update-august-14-2026/"
+        }
+      ],
+      "updated": "2026-09-28"
+    },
+    {
+      "id": "i6",
+      "assessment": "No open-source reporting found of unusual reservist call-ups, blood drives, recruitment surges, travel restrictions on PLA personnel, or advisories pulling PRC nationals out of Taiwan or allied countries.",
+      "level": 0,
+      "name": "Domestic mobilization signals",
+      "order": 6,
+      "sources": [],
+      "updated": "2026-09-28"
+    },
+    {
+      "id": "i7",
+      "assessment": "Beijing's summit readouts press Washington to oppose Taiwan independence. No new legal instruments or Anti-Secession Law invocations tied to Taiwan this quarter.",
+      "level": 1,
+      "name": "Rhetoric and legal groundwork",
+      "order": 7,
+      "sources": [
+        {
+          "title": "Al Jazeera",
+          "url": "https://www.aljazeera.com/news/2026/9/24/trump-xi-summit-four-key-takeaways-from-the-washington-dc-meeting"
+        }
+      ],
+      "updated": "2026-09-28"
+    }
+  ],
+  "factors": [
+    {
+      "id": "f1",
+      "name": "A 'sacred commitment' to Taiwan",
+      "note": "Unchanged. Beijing's readouts from both 2026 summits frame Taiwan as central to national reunification and territorial integrity.",
+      "order": 1,
+      "sources": [
+        {
+          "title": "Digitimes: summit readouts",
+          "url": "https://www.digitimes.com/news/a20260926VL200/beijing-xi-jinping-taiwan.html"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "f2",
+      "name": "Authoritarian decision-making risk",
+      "note": "The 2026 purges (38 full generals investigated or missing) leave fewer officers able to give Xi candid readiness assessments. This cuts both ways: less capability, more risk of miscalculation.",
+      "order": 2,
+      "sources": [
+        {
+          "title": "ISDP brief",
+          "url": "https://www.isdp.eu/wp-content/uploads/2026/03/Brief-Purge-Mar-31-2026.pdf"
+        },
+        {
+          "title": "AEI update, Aug 14",
+          "url": "https://www.aei.org/commentary/china-taiwan-update-august-14-2026/"
+        }
+      ],
+      "status": "strengthened"
+    },
+    {
+      "id": "f3",
+      "name": "Xi's political incentive",
+      "note": "The 21st Party Congress in fall 2027 decides a fourth term. Taiwan remains the legacy prize, though summit diplomacy now offers Xi visible wins without war.",
+      "order": 3,
+      "sources": [],
+      "status": "active"
+    },
+    {
+      "id": "f4",
+      "name": "PLA readiness goal for 2027",
+      "note": "The 2027 goal still stands as a capability marker, but the 2026 ODNI assessment sees no fixed timetable and analysts judge the purges put the goal out of reach.",
+      "order": 4,
+      "sources": [
+        {
+          "title": "Jamestown: After the Purge",
+          "url": "https://jamestown.substack.com/p/after-the-purge-reassessing-the-risk"
+        },
+        {
+          "title": "East Asia Forum",
+          "url": "https://eastasiaforum.org/2026/07/04/xis-purge-pushes-back-the-taiwan-timetable/"
+        }
+      ],
+      "status": "weakened"
+    }
+  ],
+  "dates": [
+    {
+      "what": "APEC in China, a planned Trump-Xi meeting",
+      "when": "Nov 2026"
+    },
+    {
+      "what": "Taiwan local elections, first test for the Cheng-led KMT",
+      "when": "Nov 28, 2026"
+    },
+    {
+      "what": "G20 Miami, a planned Trump-Xi meeting",
+      "when": "Dec 2026"
+    },
+    {
+      "what": "Window for a year-end drill like Justice Mission 2025",
+      "when": "Late Dec 2026"
+    },
+    {
+      "what": "TSMC Arizona fab 2 begins 3nm volume production",
+      "when": "2H 2027"
+    },
+    {
+      "what": "Beidaihe leadership retreat",
+      "when": "Summer 2027"
+    },
+    {
+      "what": "21st Party Congress; PLA centenary goal year",
+      "when": "Fall 2027"
+    },
+    {
+      "what": "Taiwan presidential election",
+      "when": "Jan 2028"
+    }
+  ],
+  "history": [
+    {
+      "date": "2025-04-21",
+      "minutes": null,
+      "note": "Moore's published reading. He judged an invasion likely within one to three years.",
+      "sooner": 11
+    },
+    {
+      "date": "2026-09-28",
+      "minutes": 35,
+      "sooner": 7,
+      "note": "Baseline. Relations warmed after two summits; arms package frozen; PLA leadership purged; US munitions depleted by the Iran war."
+    }
+  ]
+}
