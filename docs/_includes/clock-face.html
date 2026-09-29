@@ -1,0 +1,48 @@
+{%- comment -%}
+  Minutes-to-midnight clock face, drawn at build time. Params:
+    minutes   0 to 60, from the data file's "current" block
+    compact   true for the homepage tile: major ticks only, no numerals
+    live      true to add the second hand the clock page's script ticks
+    title_id  id for the SVG's title; omit it to hide the face from
+              screen readers when a text readout sits next to it
+  Angles are clock angles: 0 is 12 o'clock, positive is clockwise. Liquid
+  has no trig, so every mark is drawn pointing at 12 and rotated into place.
+  The shaded wedge is a dashed stroke on a half-radius circle as wide as that
+  radius: the dash covers minutes/60 of the circumference (2 x pi x 56 =
+  351.858), from the minute hand clockwise to 12. SVG strokes start at
+  3 o'clock, hence the -90.
+{%- endcomment -%}
+{%- assign m = include.minutes | plus: 0 %}
+{%- assign minute_deg = m | times: -6 | plus: 360 %}
+{%- assign hour_deg = 60 | minus: m | divided_by: 2.0 | plus: 330 %}
+{%- assign wedge_len = m | times: 351.858 | divided_by: 60.0 | round: 2 %}
+{%- assign wedge_rot = minute_deg | minus: 90 %}
+<svg class="clock-face{% if include.compact %} clock-face--compact{% endif %}" viewBox="0 0 260 260"{% if include.title_id %} role="img" aria-labelledby="{{ include.title_id }}"{% else %} aria-hidden="true" focusable="false"{% endif %}>
+  {%- if include.title_id %}
+  <title id="{{ include.title_id }}">Clock face at {{ m }} minutes to midnight</title>
+  {%- endif %}
+  <g transform="translate(130 130)">
+    <circle class="clock-face__bezel" r="122"/>
+    <circle class="clock-face__dial" r="112"/>
+    <circle class="clock-face__wedge" r="56" stroke-width="112" stroke-dasharray="{{ wedge_len }} 352" transform="rotate({{ wedge_rot }})"/>
+    <circle class="clock-face__ring" r="70"/>
+    {%- for i in (0..59) %}
+    {%- assign off_hour = i | modulo: 5 %}
+    {%- if include.compact and off_hour != 0 %}{% continue %}{% endif %}
+    <line class="clock-face__tick{% if off_hour == 0 %} clock-face__tick--major{% endif %}{% if i == 0 %} clock-face__tick--midnight{% endif %}" y1="-110" y2="{% if off_hour == 0 %}-96{% else %}-103{% endif %}" transform="rotate({{ i | times: 6 }})"/>
+    {%- endfor %}
+    {%- unless include.compact %}
+    <text class="clock-face__num clock-face__num--midnight" y="-80" dy=".35em">12</text>
+    <text class="clock-face__num" x="80" dy=".35em">3</text>
+    <text class="clock-face__num" y="80" dy=".35em">6</text>
+    <text class="clock-face__num" x="-80" dy=".35em">9</text>
+    {%- endunless %}
+    <line class="clock-face__hour" y2="-58" transform="rotate({{ hour_deg }})"/>
+    <line class="clock-face__minute" y1="16" y2="-94" transform="rotate({{ minute_deg }})"/>
+    {%- if include.live %}
+    <line class="clock-face__second" y1="18" y2="-100" data-second-hand/>
+    {%- endif %}
+    <circle class="clock-face__hub" r="5"/>
+    <circle class="clock-face__pin" r="2"/>
+  </g>
+</svg>

@@ -1,0 +1,252 @@
+---
+layout: default
+title: Taiwan Dashboard Clock
+description: >-
+  A weekly minutes-to-midnight reading on a PLA use of force against Taiwan,
+  built on Gregory J. Moore's "Xi Jinping's Taiwan Dashboard" plus an
+  indications and warning layer.
+permalink: /taiwan-clock/
+---
+{%- comment -%}
+  Everything here renders at build time from docs/_data/taiwan_clock.json,
+  which the weekly routine rewrites. Escape every string from it. The numbers
+  come from its "current" block, which scripts/taiwan_clock.py computes.
+{%- endcomment -%}
+{%- assign tc = site.data.taiwan_clock %}
+{%- assign cur = tc.current %}
+{%- assign dial_total = tc.dials.size %}
+{%- assign moore_ref = tc.history | where_exp: "h", "h.minutes == nil" | first %}
+{%- assign logged = tc.history | where_exp: "h", "h.minutes != nil" | sort: "date" %}
+{%- assign prev = nil %}
+{%- for h in logged %}{% if h.date < tc.as_of %}{% assign prev = h %}{% endif %}{% endfor %}
+<div class="clock-page">
+
+<section class="panel" aria-labelledby="clock-title">
+  <header class="brief-head">
+    <p class="label">SYS // TAIWAN STRAIT WARNING BOARD</p>
+    <h1 class="brief-head__title" id="clock-title">Taiwan Dashboard Clock</h1>
+    <p class="clock-lede">A minutes-to-midnight board on {{ tc.framework.author | escape }}'s “{{ tc.framework.title | escape }}” ({{ tc.framework.venue | escape }}), plus an indications and warning layer.</p>
+    <p class="readout"><span>Scores as of {{ tc.as_of_label | escape }}</span><span>Rescored weekly</span><span>Open sources</span></p>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+  <div class="clock-hero">
+    <figure class="clock-hero__face">
+      {% include clock-face.html minutes=cur.minutes live=true title_id="clock-face-title" %}
+      <figcaption class="clock-hero__caption">12 o'clock = midnight = PLA use of force</figcaption>
+    </figure>
+    <div class="clock-hero__verdict">
+      <p class="clock-readout"><span class="clock-readout__n">{{ cur.minutes | escape }}</span> <span class="clock-readout__unit">min to midnight</span></p>
+      <p class="clock-summary">{{ tc.summary | escape }}</p>
+      <ul class="chips">
+        <li class="chip"><b>{{ cur.sooner | escape }} of {{ dial_total }}</b> dials say act sooner</li>
+        <li class="chip"><b>{{ cur.later | escape }}</b> wait, <b>{{ cur.neutral | escape }}</b> neutral</li>
+        {%- if moore_ref %}
+        <li class="chip">Moore, {{ moore_ref.date | date: "%b %Y" | escape }}: <b>{{ moore_ref.sooner | escape }} of {{ dial_total }}</b></li>
+        {%- endif %}
+        {%- if prev %}
+        {%- assign change = cur.minutes | minus: prev.minutes %}
+        {%- assign since = prev.date | date: "%b %-d" | escape %}
+        {%- if change < 0 %}
+        <li class="chip chip--act"><b>▲ {{ change | abs }} min closer</b> since {{ since }}</li>
+        {%- elsif change > 0 %}
+        <li class="chip chip--wait"><b>▼ {{ change }} min further</b> since {{ since }}</li>
+        {%- else %}
+        <li class="chip">No change since {{ since }}</li>
+        {%- endif %}
+        {%- else %}
+        <li class="chip">First logged reading</li>
+        {%- endif %}
+      </ul>
+      {%- comment -%} Liquid can't format decimals, so print hundredths as "0.NN" by hand. {%- endcomment -%}
+      {%- assign motive_pct = cur.motive | times: 100 | round %}
+      {%- assign prep_pct = cur.preparation | times: 100 | round %}
+      <dl class="meters">
+        <dt>Motive S</dt>
+        <dd class="meter" aria-hidden="true"><span style="width: {{ motive_pct }}%"></span></dd>
+        <dd class="meter__value">{{ motive_pct | divided_by: 100 }}.{{ motive_pct | modulo: 100 | prepend: "0" | slice: -2, 2 }}</dd>
+        <dt>Preparation T</dt>
+        <dd class="meter" aria-hidden="true"><span style="width: {{ prep_pct }}%"></span></dd>
+        <dd class="meter__value">{{ prep_pct | divided_by: 100 }}.{{ prep_pct | modulo: 100 | prepend: "0" | slice: -2, 2 }}</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="panel" aria-labelledby="dials-title">
+  <header class="brief-head">
+    <p class="label">SEC_01 // MOTIVE</p>
+    <h2 class="clock-section__title" id="dials-title">The {{ dial_total }} dials</h2>
+    <p class="clock-section__intro">Each needle shows whether today's conditions push Beijing to act sooner (right, coral) or give it reason to wait (left, cyan). Moore's 2025 call is tagged so you can see where the reading has flipped.</p>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+  {%- assign groups = "opening|Opening windows · Moore: time favors Beijing,closing|Closing windows · Moore: sooner is better" | split: "," %}
+  {%- for group in groups %}
+  {%- assign g = group | split: "|" %}
+  {%- assign group_dials = tc.dials | where: "window", g[0] | sort: "n" %}
+  {%- if group_dials.size > 0 %}
+  <h3 class="clock-group">{{ g[1] }}</h3>
+  <ul class="dial-grid">
+    {%- for d in group_dials %}
+    {%- assign r = d.reading | plus: 0 %}
+    {%- if r > 0 %}{% assign sign = "+" %}{% assign tone = "act" %}{% elsif r < 0 %}{% assign sign = "-" %}{% assign tone = "wait" %}{% else %}{% assign sign = "0" %}{% assign tone = "neutral" %}{% endif %}
+    <li class="dial" id="{{ d.id | slugify }}">
+      <div class="dial__head">
+        <div>
+          <p class="dial__code">DIAL {{ d.n | prepend: "0" | slice: -2, 2 | escape }}</p>
+          <h4 class="dial__name">{{ d.name | escape }}</h4>
+        </div>
+        {% include dial-gauge.html reading=d.reading %}
+      </div>
+      <ul class="tags">
+        <li class="tag">Moore 2025: {% if d.moore == "+" %}act sooner{% else %}wait{% endif %}</li>
+        {%- if sign != d.moore %}
+        <li class="tag tag--flip tag--{{ tone }}">Reading has flipped</li>
+        {%- endif %}
+        <li class="tag">{% case d.trend %}{% when "rising" %}↑ Pressure rising{% when "easing" %}↓ Pressure easing{% else %}→ Steady{% endcase %}</li>
+      </ul>
+      <p class="dial__text">{{ d.assessment | escape }}</p>
+      {% include clock-sources.html sources=d.sources %}
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+  {%- endfor %}
+</section>
+
+<section class="panel" aria-labelledby="factors-title">
+  <header class="brief-head">
+    <p class="label">SEC_02 // CONSTANTS</p>
+    <h2 class="clock-section__title" id="factors-title">Four constants</h2>
+    <p class="clock-section__intro">Moore treats these as fixed pressures, not dials. They are tracked for changes in strength only and do not move the clock.</p>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+  <ul class="factor-grid">
+    {%- assign factors = tc.factors | sort: "order" %}
+    {%- for f in factors %}
+    <li class="factor">
+      <p class="factor__status factor__status--{{ f.status | slugify }}">{{ f.status | escape }}</p>
+      <h3 class="factor__name">{{ f.name | escape }}</h3>
+      <p class="factor__text">{{ f.note | escape }}</p>
+      {% include clock-sources.html sources=f.sources %}
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
+
+<section class="panel" aria-labelledby="iw-title">
+  <header class="brief-head">
+    <p class="label">SEC_03 // PREPARATION</p>
+    <h2 class="clock-section__title" id="iw-title">Indications and warning</h2>
+    <p class="clock-section__intro">Moore's dials read motive. This layer reads observable preparation, the things a warning analyst would expect to see before a campaign. Levels run from none through watch and elevated to warning.</p>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+  {%- assign level_names = "None,Watch,Elevated,Warning" | split: "," %}
+  <ul class="iw-list">
+    {%- assign indicators = tc.iw | sort: "order" %}
+    {%- for i in indicators %}
+    {%- assign lv = i.level | plus: 0 %}
+    <li class="iw">
+      <h3 class="iw__name">{{ i.name | escape }}</h3>
+      <div class="level level--{{ lv }}">
+        <div class="level__bar" aria-hidden="true">
+          {%- for step in (0..3) %}<span{% if step <= lv %} class="is-on"{% endif %}></span>{% endfor -%}
+        </div>
+        <p class="level__name"><span class="sr-only">Level {{ lv }} of 3: </span>{{ level_names[lv] }}</p>
+      </div>
+      <div class="iw__body">
+        <p class="iw__text">{{ i.assessment | escape }}</p>
+        {% include clock-sources.html sources=i.sources %}
+      </div>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
+
+<section class="panel" aria-labelledby="log-title">
+  <header class="brief-head">
+    <p class="label">SEC_04 // LOG</p>
+    <h2 class="clock-section__title" id="log-title">Reading log</h2>
+    <p class="clock-section__intro">Each weekly review adds one line. Moore's original reading is kept as the reference point.</p>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+  {%- comment -%} Explicit roles keep table semantics when the phone layout restyles the rows. {%- endcomment -%}
+  <table class="clock-log" role="table">
+    <thead role="rowgroup">
+      <tr role="row"><th scope="col" role="columnheader">Date</th><th scope="col" role="columnheader">Minutes</th><th scope="col" role="columnheader">Dials saying sooner</th><th scope="col" role="columnheader">Note</th></tr>
+    </thead>
+    <tbody role="rowgroup">
+      {%- assign entries = tc.history | sort: "date" | reverse %}
+      {%- for h in entries %}
+      <tr role="row">
+        <td class="clock-log__num" role="cell">{{ h.date | escape }}</td>
+        <td class="clock-log__num" role="cell" data-label="Min">{% if h.minutes == nil %}n/a{% else %}{{ h.minutes | escape }}{% endif %}</td>
+        <td class="clock-log__num" role="cell" data-label="Sooner">{{ h.sooner | escape }} of {{ dial_total }}</td>
+        <td class="clock-log__note" role="cell">{{ h.note | escape }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</section>
+
+<div class="clock-duo">
+  <section class="panel" aria-labelledby="dates-title">
+    <header class="brief-head">
+      <p class="label">SEC_05 // CALENDAR</p>
+      <h2 class="clock-section__title" id="dates-title">Dates that could move a dial</h2>
+    </header>
+    <div class="trace" aria-hidden="true"></div>
+    <ul class="clock-dates">
+      {%- for d in tc.dates %}
+      <li><span class="clock-dates__when">{{ d.when | escape }}</span><span>{{ d.what | escape }}</span></li>
+      {%- endfor %}
+    </ul>
+  </section>
+
+  <section class="panel" aria-labelledby="method-title">
+    <header class="brief-head">
+      <p class="label">SEC_06 // METHOD</p>
+      <h2 class="clock-section__title" id="method-title">How the clock is set</h2>
+    </header>
+    <div class="trace" aria-hidden="true"></div>
+    <div class="clock-method">
+      <p>Each dial is scored from −2 (strong reason to wait) to +2 (strong reason to act soon). Each indications and warning (I&amp;W) indicator is scored 0 to 3. Dials are weighted equally, as in Moore.</p>
+      <ul class="formula">
+        <li><code>S = (mean dial reading + 2) / 4</code> <span>motive, 0 to 1</span></li>
+        <li><code>T = mean I&amp;W level / 3</code> <span>preparation, 0 to 1</span></li>
+        <li><code>minutes = round(60 − 30·S − 28·T)</code> <span>clamped to 2 to 60</span></li>
+        <li><code>if any I&amp;W level is 3: minutes ≤ 10</code></li>
+      </ul>
+      <p>Motive alone can take the clock to 30 minutes. Getting inside that takes preparation you can see. The split is deliberate: Moore's own reading in 2025 had {% if moore_ref %}{{ moore_ref.sooner | escape }} of {{ dial_total }}{% else %}most{% endif %} dials favoring action, and nothing happened, because motive is not intent.</p>
+      <p><strong>Midnight:</strong> {{ tc.midnight | escape }}</p>
+      <p>This is a structured judgment aid, not a forecast. Scores are analyst calls on open sources, re-read weekly and cited on each card.</p>
+    </div>
+  </section>
+</div>
+
+<p class="clock-credit">Framework: {{ tc.framework.author | escape }}, “<a href="{{ tc.framework.url | escape }}">{{ tc.framework.title | escape }}</a>,” {{ tc.framework.venue | escape }}. Scores refreshed weekly by Claude from open sources.</p>
+
+</div>
+
+<script>
+  // The page's only script: a ticking second hand. Everything else is built
+  // at compile time, and the hand stays hidden when motion is reduced.
+  (function () {
+    var face = document.querySelector(".clock-hero .clock-face");
+    var hand = face && face.querySelector("[data-second-hand]");
+    if (!hand || !window.matchMedia) return;
+    var still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var timer;
+    function tick() {
+      var now = new Date();
+      hand.setAttribute("transform", "rotate(" + now.getSeconds() * 6 + ")");
+      timer = setTimeout(tick, 1000 - now.getMilliseconds());
+    }
+    function sync() {
+      clearTimeout(timer);
+      face.classList.toggle("is-ticking", !still.matches);
+      if (!still.matches) tick();
+    }
+    sync();
+    if (still.addEventListener) still.addEventListener("change", sync);
+  })();
+</script>

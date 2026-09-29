@@ -15,7 +15,23 @@ layout: default
     {%- endif %}
   </div>
 
-  <aside class="grid-split__rail" aria-label="Recent briefs and schedule">
+  <aside class="grid-split__rail" aria-label="Taiwan clock, recent briefs and schedule">
+    {%- assign tc = site.data.taiwan_clock %}
+    {%- if tc.current %}
+    <section class="panel panel--rail clock-tile">
+      <p class="label">SYS // TAIWAN CLOCK</p>
+      <div class="clock-tile__read">
+        <div class="clock-tile__face">{% include clock-face.html minutes=tc.current.minutes compact=true %}</div>
+        <p class="clock-tile__minutes"><span class="clock-tile__n">{{ tc.current.minutes | escape }}</span> <span class="clock-tile__unit">min to midnight</span></p>
+      </div>
+      <dl class="readout-list">
+        <div><dt>AS OF</dt><dd>{{ tc.as_of_label | upcase | escape }}</dd></div>
+        <div><dt>DIALS</dt><dd>{{ tc.current.sooner | escape }} OF {{ tc.dials.size }} SAY SOONER</dd></div>
+      </dl>
+      <a class="button button--ghost" href="{{ '/taiwan-clock/' | relative_url }}">Open the clock</a>
+    </section>
+    {%- endif %}
+
     <section class="panel panel--rail">
       <p class="label">LOG // RECENT</p>
       <ol class="log">

@@ -1,0 +1,16 @@
+{%- comment -%}
+  Source links for a clock card. Param: sources, a list of {title, url}.
+  The weekly routine writes these, so text is escaped and only https URLs
+  become links.
+{%- endcomment -%}
+{%- if include.sources.size > 0 %}
+<div class="clock-src">
+  <span class="clock-src__label">Sources</span>
+  <ul>
+    {%- for s in include.sources %}
+    {%- assign scheme = s.url | slice: 0, 8 %}
+    <li>{% if scheme == "https://" %}<a href="{{ s.url | escape }}">{{ s.title | escape }}</a>{% else %}{{ s.title | escape }}{% endif %}</li>
+    {%- endfor %}
+  </ul>
+</div>
+{%- endif %}
