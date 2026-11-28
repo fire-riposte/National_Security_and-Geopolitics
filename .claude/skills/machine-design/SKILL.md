@@ -29,6 +29,17 @@ rarely for contrast, but the monitor stays dominant.
 Supporting values used in this repo: body text `#C9D3F5`, strong text
 `#F2F5FF`, muted text `#8A98C4`, cream card `#F1E9D6` with navy `#0E1530` ink.
 
+Status tokens (added for the Taiwan clock; reuse them for any act/wait or
+warning-level signal):
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--act` | Danger | Pressure to act, positive readings, alarm |
+| `--wait` | Console | A reason to wait, negative readings, calm |
+| `--neutral` | Muted | Zero readings, unchanged status |
+| `--act-wash` | Danger at 20% | Shaded danger zones, like the clock's wedge |
+| `--level-0` to `--level-3` | Muted, then Danger at 45%, 75%, 100% | Warning levels none, watch, elevated, warning |
+
 ## Typography
 
 Three voices:
@@ -78,4 +89,7 @@ Three voices:
 
 - Stylesheet and tokens: `docs/assets/css/machine.css`
 - Layouts: `docs/_layouts/`, shared brief markup: `docs/_includes/brief.html`
+- Taiwan clock: `docs/taiwan-clock.html`, with the clock face, dial gauge and
+  source list in `docs/_includes/` (`clock-face.html`, `dial-gauge.html`,
+  `clock-sources.html`)
 - Fonts are self-hosted in `docs/assets/fonts/` (SIL Open Font License).

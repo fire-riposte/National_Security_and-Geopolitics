@@ -23,8 +23,8 @@ what the brief covers or how it reads; the routine picks up changes on its next 
 
 ## What to cover
 
-Readers want to know what affects US national security, with espionage first.
-In priority order:
+Readers want to know what affects US national security, with espionage first,
+and follow German and Israeli intelligence and military news. In priority order:
 
 1. **Espionage and counterintelligence.** Arrests, indictments, expulsions,
    recruitment and insider cases, spy agency operations, state-backed cyber
@@ -35,21 +35,32 @@ In priority order:
 3. **Adversaries and great-power competition.** China, Russia, Iran and North
    Korea: military moves, intelligence activity, tech and export-control fights,
    alliances, arms control.
+4. **Germany and Israel.** Their intelligence services (BND, BfV and MAD;
+   Mossad, Shin Bet and military intelligence, including Unit 8200) and
+   militaries (Bundeswehr, IDF): leadership, oversight and reform, operations,
+   posture, and procurement that changes capability. The "Why it matters" line
+   can be about German, Israeli or European security; it doesn't need a US
+   angle.
+
+Each story goes in the first section it fits. A Russian spy arrested in Germany
+goes in Espionage and counterintelligence; an Israeli strike on Iran goes in
+China, Russia, Iran and North Korea.
 
 Skip or cut first: routine contract awards, personnel moves below service chief
 or agency head, domestic politics that don't change security policy, and
 opinion pieces (unless they come from a senior official or a major figure).
 
-Aim for 8 to 12 stories. On a slow day, write fewer. Never pad.
+Aim for 8 to 12 stories, plus up to 4 in Germany and Israel. On a slow day,
+write fewer. Never pad.
 
 ## Worth reading
 
 List 2 to 4 standout pieces that aren't breaking news: long reads,
 investigations, histories, analysis. Draw first from the Reddit r/espionage
 candidates (community picks), then War on the Rocks, Lawfare, Just Security,
-SpyTalk, The Cipher Brief and Jamestown. Skip anything that looks like a
-listicle, a press release, or a repost of a story already in the brief. Leave
-the section out if nothing qualifies.
+SpyTalk, The Cipher Brief, Jamestown, INSS and Alma Center. Skip anything that
+looks like a listicle, a press release, or a repost of a story already in the
+brief. Leave the section out if nothing qualifies.
 
 ## Rules
 
@@ -65,6 +76,15 @@ the section out if nothing qualifies.
 - **Attribute claims.** "Prosecutors allege", "according to the Pentagon",
   "Russian state media claimed". Flag a claim that rests only on adversary
   state media.
+- **Israeli covert operations.** Israel's military censor limits what Israeli
+  outlets can report about Mossad, Shin Bet and Unit 8200 operations, so they
+  often cite "foreign reports." Attribute the claim to whoever reported it, and
+  don't state Israeli responsibility for a covert operation as fact unless
+  Israeli officials confirm it.
+- **German sources.** Write every headline and summary in English, even when
+  the source is in German. Cite the original German article and mark the link:
+  ([Tagesschau, in German](url)). In Worth reading, translate the title and
+  write "(Outlet, in German)".
 - **Keep the analysis short and labeled.** The "Why it matters" line is your
   judgment. It must follow from the facts in the story, not from speculation.
 - **Paraphrase.** Don't copy sentences from articles. At most one short quote
@@ -105,6 +125,10 @@ what's alleged or confirmed.> *Why it matters:* <one sentence.>
 <same format>
 
 ## China, Russia, Iran and North Korea
+
+<same format>
+
+## Germany and Israel
 
 <same format>
 

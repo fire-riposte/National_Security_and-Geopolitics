@@ -1,0 +1,30 @@
+{%- comment -%}
+  Semicircle gauge for one dial. Param: reading, an integer from -2 (WAIT,
+  far left) to +2 (ACT, far right). The needle is drawn pointing at -2 and
+  rotated 45 degrees per step.
+{%- endcomment -%}
+{%- assign r = include.reading | plus: 0 %}
+{%- if r > 0 %}
+  {%- assign tone = "act" %}
+  {%- assign shown = r | prepend: "+" %}
+{%- elsif r < 0 %}
+  {%- assign tone = "wait" %}
+  {%- assign shown = r | abs | prepend: "−" %}
+{%- else %}
+  {%- assign tone = "neutral" %}
+  {%- assign shown = "0" %}
+{%- endif %}
+<svg class="gauge gauge--{{ tone }}" viewBox="-4 -6 100 72" role="img" aria-label="Reading {{ shown }}, on a scale from −2 (wait) to +2 (act)">
+  <path class="gauge__arc gauge__arc--wait" d="M8 46 A38 38 0 0 1 46 8"/>
+  <path class="gauge__arc gauge__arc--act" d="M46 8 A38 38 0 0 1 84 46"/>
+  <g transform="translate(46 46)">
+    {%- for k in (0..4) %}
+    <line class="gauge__tick" x1="-43" x2="-47" transform="rotate({{ k | times: 45 }})"/>
+    {%- endfor %}
+    <line class="gauge__needle" x2="-31" transform="rotate({{ r | plus: 2 | times: 45 }})"/>
+    <circle class="gauge__hub" r="4"/>
+  </g>
+  <text class="gauge__end gauge__end--wait" x="-2" y="63">WAIT</text>
+  <text class="gauge__end gauge__end--act" x="94" y="63">ACT</text>
+  <text class="gauge__value" x="46" y="64">{{ shown }}</text>
+</svg>
