@@ -31,6 +31,7 @@ DEFAULT_DEST = ROOT.parent / "casi-archive" / "files"
 MANIFEST = ROOT / "docs" / "_data" / "casi.json"
 MISSING = ROOT / "docs" / "_data" / "casi_missing.json"
 ARTICLES = ROOT / "docs" / "_data" / "casi_articles.json"  # from fetch_casi_meta.py
+TITLES = ROOT / "docs" / "_data" / "casi_titles.json"  # titles read off the PDFs, by path
 
 CDX = (
     "https://web.archive.org/cdx/search/cdx"
@@ -121,6 +122,13 @@ def title_and_date(filename: str) -> tuple[str, str]:
         if m:
             date = m[1] + (f"-{m[2]}" if m[2] else "")
     return title or filename, date
+
+
+def pdf_title(item: dict, path: str, titles: dict) -> tuple[str, str]:
+    """A title read off the PDF itself beats a file name, but not an article page."""
+    if item["title_source"] == "file name" and titles.get(path):
+        return titles[path], "PDF"
+    return item["title"], item["title_source"]
 
 
 def alternates(caps: list[list[str]], chosen_digest: str) -> list[tuple[str, str]]:
@@ -283,6 +291,7 @@ def main() -> int:
     items = index()
     print(f"index: {len(items)} unique PDFs", flush=True)
 
+    titles = json.loads(TITLES.read_text(encoding="utf-8")) if TITLES.exists() else {}
     used: set[str] = set()
     done, failed, fetched = [], [], 0
     for n, item in enumerate(items, 1):
@@ -327,6 +336,7 @@ def main() -> int:
 
         data = dest.read_bytes()
         item["date"], item["date_source"] = best_date(item, data)
+        item["title"], item["title_source"] = pdf_title(item, path, titles)
         done.append({
             "title": item["title"],
             "date": item["date"],

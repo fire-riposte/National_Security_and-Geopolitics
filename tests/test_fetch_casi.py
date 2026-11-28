@@ -24,6 +24,24 @@ class TitleAndDate(unittest.TestCase):
         self.assertEqual(fc.title_and_date("CASI_Primer 2017.pdf"), ("CASI Primer 2017", ""))
 
 
+class PdfTitle(unittest.TestCase):
+    TITLES = {"books/little-eagles.pdf": "China's \"Little Eagles\""}
+
+    def test_pdf_title_replaces_file_name(self):
+        item = {"title": "Little Eagles", "title_source": "file name"}
+        self.assertEqual(fc.pdf_title(item, "books/little-eagles.pdf", self.TITLES),
+                         ("China's \"Little Eagles\"", "PDF"))
+
+    def test_article_page_title_wins(self):
+        item = {"title": "From the page", "title_source": "article page"}
+        self.assertEqual(fc.pdf_title(item, "books/little-eagles.pdf", self.TITLES),
+                         ("From the page", "article page"))
+
+    def test_no_entry_keeps_file_name(self):
+        item = {"title": "Other", "title_source": "file name"}
+        self.assertEqual(fc.pdf_title(item, "books/other.pdf", self.TITLES), ("Other", "file name"))
+
+
 class BestDate(unittest.TestCase):
     PDF = b"%PDF-1.7 /CreationDate (D:20150302120000) %%EOF"
 

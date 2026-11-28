@@ -34,7 +34,7 @@ permalink: /casi/
       The files were collected from the Internet Archive's captures of
       <code>airuniversity.af.edu/CASI</code>. Titles and dates come from CASI's
       own article pages where one was archived. Otherwise the title is the
-      original file name, and the date is the one in the file name or stored in
+      one printed in the PDF, or failing that the original file name, and the date is the one in the file name or stored in
       the PDF. The PDFs are kept in a separate repository so this one stays small. Each entry links to that copy and
       to the Wayback Machine capture it came from. This site is not affiliated
       with CASI, Air University or the Department of the Air Force.
@@ -43,7 +43,7 @@ permalink: /casi/
 
   <div class="catalog-tools">
     <label class="label" for="casi-filter">Filter // Title, description, date</label>
-    <input class="catalog-filter" id="casi-filter" type="search" placeholder="e.g. rocket force, hypersonic, 2024" autocomplete="off">
+    <input class="catalog-filter" id="casi-filter" type="search" placeholder="e.g. rocket force 2024" autocomplete="off">
     <p class="readout" id="casi-count" aria-live="polite"></p>
   </div>
 
@@ -104,7 +104,7 @@ permalink: /casi/
   var items = Array.prototype.slice.call(document.querySelectorAll(".catalog__item"));
   var groups = Array.prototype.slice.call(document.querySelectorAll(".catalog-group"));
   function apply() {
-    var terms = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+    var terms = input.value.toLowerCase().split(/[\s,]+/).filter(Boolean);
     var shown = 0;
     items.forEach(function (li) {
       var text = li.getAttribute("data-text");
