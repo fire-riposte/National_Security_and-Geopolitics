@@ -31,11 +31,45 @@ minutes-to-midnight board on a PLA use of force against Taiwan, rescored weekly
 | `feeds.toml` | News sources and the keyword scoring. Add or remove feeds here. |
 | `BRIEFING.md` | Editorial rules and the brief template. Change focus or tone here. |
 | `scripts/fetch_feeds.py` | Feed fetcher and ranker. Standard-library Python, no installs. |
+| `scripts/fetch_casi.py`, `scripts/fetch_casi_meta.py` | Download the CASI publications and their titles and dates from the Wayback Machine. |
 | `tests/` | Unit tests for the fetcher and the clock: `python3 -m unittest discover -s tests` |
 | `docs/` | The Jekyll site. Briefs live in `docs/_posts/`, styling in `docs/assets/css/machine.css`. |
 | `docs/_data/taiwan_clock.json` | The Taiwan clock's scores, sources and log. The page and homepage tile render from it. |
 | `scripts/taiwan_clock.py` | Validates the clock data and logs each weekly reading. Standard-library Python. |
 | `.claude/skills/machine-design/` | The Machine design system spec, so future Claude sessions keep the look consistent. |
+
+## CASI archive
+
+The page at `/casi/` is a catalog of the publications of the Air Force's China
+Aerospace Studies Institute, which is closing. The PDFs (about 800 MB) live in
+a separate repo, [casi-archive](https://github.com/fire-riposte/casi-archive),
+so the daily routine doesn't clone them. This repo holds only the page, the
+catalog (`docs/_data/casi.json`) and the script. `casi_files_url` in
+`docs/_config.yml` says where the PDFs are served from.
+
+The live CASI site blocks scripts, so both scripts read the Internet Archive's
+Wayback Machine instead:
+
+- `scripts/fetch_casi_meta.py` reads the archived copies of CASI's article
+  pages and saves each publication's real title, publish date and description
+  to `docs/_data/casi_articles.json`.
+- `scripts/fetch_casi.py` downloads the PDFs into a checkout of casi-archive
+  next to this repo, drops byte-identical duplicates, replaces captures that
+  were cut off, and rewrites the catalog. A file with no article page keeps its
+  file name as the title and takes its date from the file name or from the PDF.
+  Publications that were never archived are listed in
+  `docs/_data/casi_missing.json` and shown at the bottom of the page.
+
+Re-running either script only fetches what is missing.
+
+```bash
+git clone https://github.com/fire-riposte/casi-archive ../casi-archive
+python3 scripts/fetch_casi_meta.py
+python3 scripts/fetch_casi.py
+```
+
+GitHub Pages sites are capped at 1 GB, so watch the size of casi-archive before
+adding more.
 
 ## Design
 

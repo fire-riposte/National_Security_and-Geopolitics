@@ -1,0 +1,122 @@
+---
+layout: default
+title: CASI Archive
+description: >-
+  A mirror of the publications of the Department of the Air Force's China
+  Aerospace Studies Institute, saved before the institute closes.
+permalink: /casi/
+---
+{%- assign docs = site.data.casi %}
+{%- assign groups = docs | group_by: "category_name" | sort: "name" %}
+{%- assign total = 0 %}
+{%- for d in docs %}{% assign total = total | plus: d.bytes %}{% endfor %}
+<article class="panel">
+  <header class="brief-head">
+    <p class="label">SYS // CASI ARCHIVE</p>
+    <h1 class="brief-head__title">China Aerospace Studies Institute</h1>
+    <p class="readout">
+      <span>{{ docs.size }} documents</span>
+      <span>{{ total | divided_by: 1048576 }} MB</span>
+      <span>Source: Wayback Machine</span>
+    </p>
+  </header>
+  <div class="trace" aria-hidden="true"></div>
+
+  <div class="prose">
+    <p>
+      CASI was the Air Force's open-source research shop on Chinese air, space
+      and missile forces. Its civilian positions lost funding on October 1,
+      2026, and its director has said the institute will close once those staff
+      leave. This page keeps a copy of its publications so they stay easy to
+      find.
+    </p>
+    <p>
+      The files were collected from the Internet Archive's captures of
+      <code>airuniversity.af.edu/CASI</code>. Titles and dates come from CASI's
+      own article pages where one was archived. Otherwise the title is the
+      original file name, and the date is the one in the file name or stored in
+      the PDF. The PDFs are kept in a separate repository so this one stays small. Each entry links to that copy and
+      to the Wayback Machine capture it came from. This site is not affiliated
+      with CASI, Air University or the Department of the Air Force.
+    </p>
+  </div>
+
+  <div class="catalog-tools">
+    <label class="label" for="casi-filter">Filter // Title, description, date</label>
+    <input class="catalog-filter" id="casi-filter" type="search" placeholder="e.g. rocket force, hypersonic, 2024" autocomplete="off">
+    <p class="readout" id="casi-count" aria-live="polite"></p>
+  </div>
+
+  <nav class="catalog-jump" aria-label="Sections">
+    {%- for g in groups %}
+    <a class="button button--ghost" href="#{{ g.name | slugify }}">{{ g.name }} <span class="catalog-jump__n">{{ g.items.size }}</span></a>
+    {%- endfor %}
+  </nav>
+
+  {%- for g in groups %}
+  <section class="catalog-group" id="{{ g.name | slugify }}">
+    <h2 class="catalog-group__title"><span class="label">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span> {{ g.name }}</h2>
+    <ol class="log log--full catalog">
+      {%- assign items = g.items | sort: "date" | reverse %}
+      {%- for d in items %}
+      <li class="log__item catalog__item" data-text="{{ d.title | downcase | escape }} {{ d.summary | downcase | escape }} {{ d.date }} {{ d.category_name | downcase }}">
+        <a class="catalog__link" href="{{ site.casi_files_url }}/{{ d.path }}">
+          <span class="log__date">{% if d.date != "" %}{{ d.date }}{% else %}UNDATED{% endif %}</span>
+          <span class="log__title">{{ d.title | escape }}</span>
+        </a>
+        <p class="readout catalog__meta">
+          <span>PDF {{ d.bytes | divided_by: 1048576.0 | round: 1 }} MB</span>
+          {%- if d.article_wayback != "" %}
+          <span><a href="{{ d.article_wayback }}" rel="noopener">CASI page</a></span>
+          {%- endif %}
+          <span><a href="{{ d.wayback_url }}" rel="noopener">Wayback capture {{ d.captured }}</a></span>
+        </p>
+      </li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endfor %}
+
+  {%- assign missing = site.data.casi_missing %}
+  {%- if missing.size > 0 %}
+  <section class="catalog-group" id="not-recovered">
+    <h2 class="catalog-group__title"><span class="label">--</span> Not recovered</h2>
+    <p class="muted">CASI's site linked to these files, but the Wayback Machine never saved a copy. The CASI page for each one is still archived.</p>
+    <ol class="log log--full catalog">
+      {%- for d in missing %}
+      <li class="log__item catalog__item" data-text="{{ d.title | downcase | escape }} {{ d.date }}">
+        <a class="catalog__link" href="{{ d.article_wayback }}" rel="noopener">
+          <span class="log__date">{% if d.date != "" %}{{ d.date }}{% else %}UNDATED{% endif %}</span>
+          <span class="log__title">{{ d.title | escape }}</span>
+        </a>
+        <p class="readout catalog__meta"><span>No copy</span><span>{{ d.file | escape }}</span></p>
+      </li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
+</article>
+
+<script>
+(function () {
+  var input = document.getElementById("casi-filter");
+  var count = document.getElementById("casi-count");
+  var items = Array.prototype.slice.call(document.querySelectorAll(".catalog__item"));
+  var groups = Array.prototype.slice.call(document.querySelectorAll(".catalog-group"));
+  function apply() {
+    var terms = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+    var shown = 0;
+    items.forEach(function (li) {
+      var text = li.getAttribute("data-text");
+      var hit = terms.every(function (t) { return text.indexOf(t) !== -1; });
+      li.hidden = !hit;
+      if (hit) shown += 1;
+    });
+    groups.forEach(function (g) {
+      g.hidden = !g.querySelector(".catalog__item:not([hidden])");
+    });
+    count.textContent = terms.length ? shown + " of " + items.length + " shown" : "";
+  }
+  input.addEventListener("input", apply);
+})();
+</script>
