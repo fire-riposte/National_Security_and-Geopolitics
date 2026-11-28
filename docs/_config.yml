@@ -7,6 +7,8 @@ timezone: America/New_York
 # Update this if the repo is renamed or the site moves to a custom domain.
 baseurl: /National_Security_and-Geopolitics
 permalink: /:year/:month/:day/
+# Where the CASI PDFs are served from (the casi-archive repo's Pages site).
+casi_files_url: https://fire-riposte.github.io/casi-archive/files
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
