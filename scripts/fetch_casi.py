@@ -124,10 +124,34 @@ def title_and_date(filename: str) -> tuple[str, str]:
     return title or filename, date
 
 
+SERIES = "ITOW (In Their Own Words)"
+_SERIES_RE = re.compile(
+    r"(^|\()\s*(?:ITOW \(In Their Own Words\)|ITOW|In Their Own Words)\s*[:\-]?\s+", re.I)
+
+
+def series_label(title: str) -> str:
+    """CASI's translation series is written one way: 'ITOW (In Their Own Words): ...'."""
+    title = _SERIES_RE.sub(lambda m: f"{m.group(1)}{SERIES}: ", title)
+    inner = f"({SERIES}: "
+    if inner in title:
+        # The label came from the parent page's title, in brackets: lead with it instead.
+        title = title.replace(inner, "(")
+        if not title.startswith(SERIES):
+            title = f"{SERIES}: {title}"
+    return title
+
+
+def same_title(a: str, b: str) -> bool:
+    """True when two titles differ only in case, punctuation or the series label."""
+    def bare(t: str) -> str:
+        return re.sub(r"[^a-z0-9]+", "", series_label(t).replace(SERIES, "").lower())
+    return bare(a) == bare(b)
+
+
 def pdf_title(item: dict, path: str, titles: dict) -> tuple[str, str]:
     """A title read off the PDF itself beats a file name, but not an article page."""
     if item["title_source"] == "file name" and titles.get(path):
-        return titles[path], "PDF"
+        return series_label(titles[path]), "PDF"
     return item["title"], item["title_source"]
 
 
@@ -244,11 +268,12 @@ def index() -> list[dict]:
         title, date = title_and_date(filename)
         title_source = "article page" if article.get("title") else "file name"
         if article.get("title"):
-            if article.get("pdf_count", 1) > 1:
+            if article.get("pdf_count", 1) > 1 and not same_title(title, article["title"]):
                 # A page that links several files: keep each file's own name too.
                 title = f"{title} ({article['title']})"
             else:
                 title = article["title"]
+        title = series_label(title)
         items.append({
             "title": title,
             "article_date": article.get("date", ""),
@@ -271,7 +296,7 @@ def index() -> list[dict]:
     # Publications an article page links to that the Wayback Machine never saved.
     have = {loose(k) for keys in by_digest.values() for k in keys}
     missing = [
-        {"title": v["title"], "date": v["date"], "file": k.rsplit("/", 1)[-1],
+        {"title": series_label(v["title"]), "date": v["date"], "file": k.rsplit("/", 1)[-1],
          "article_wayback": v["article_wayback"]}
         for k, v in sorted(meta.items(), key=lambda kv: kv[1]["date"], reverse=True)
         if loose(k) not in have

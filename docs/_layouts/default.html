@@ -47,5 +47,25 @@
   <footer class="console">
     <p><span class="console__prompt">&gt;</span> natsec-brief :: {{ site.posts.size }} {% if site.posts.size == 1 %}brief{% else %}briefs{% endif %} on file :: open-source reporting only :: <a href="{{ '/feed.xml' | relative_url }}">rss</a><span class="console__cursor" aria-hidden="true"></span></p>
   </footer>
+
+  <a class="button button--ghost to-top" id="to-top" href="#top" aria-label="Back to top"><span aria-hidden="true">&uarr;</span> Top</a>
+  <script>
+  (function () {
+    var link = document.getElementById("to-top");
+    var still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    function toggle() {
+      link.classList.toggle("is-visible", window.scrollY > window.innerHeight);
+    }
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: still.matches ? "auto" : "smooth" });
+      var main = document.getElementById("main");
+      main.setAttribute("tabindex", "-1");
+      main.focus({ preventScroll: true });
+    });
+    window.addEventListener("scroll", toggle, { passive: true });
+    toggle();
+  })();
+  </script>
 </body>
 </html>

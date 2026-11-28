@@ -42,6 +42,30 @@ class PdfTitle(unittest.TestCase):
         self.assertEqual(fc.pdf_title(item, "books/other.pdf", self.TITLES), ("Other", "file name"))
 
 
+class SeriesLabel(unittest.TestCase):
+    WANT = "ITOW (In Their Own Words): Legal Warfare"
+
+    def test_every_spelling_becomes_one(self):
+        for title in ("ITOW: Legal Warfare", "ITOW Legal Warfare", "ITOW - Legal Warfare",
+                      "In their Own Words: Legal Warfare", "In Their Own Words Legal Warfare",
+                      self.WANT):
+            self.assertEqual(fc.series_label(title), self.WANT)
+
+    def test_label_inside_brackets_moves_to_the_front(self):
+        want = "ITOW (In Their Own Words): Vol 1 (The Governance of China)"
+        self.assertEqual(fc.series_label("Vol 1 (In Their Own Words: The Governance of China)"), want)
+        self.assertEqual(fc.series_label("ITOW Vol 1 (ITOW: The Governance of China)"), want)
+        self.assertEqual(fc.series_label(want), want)
+
+    def test_other_titles_untouched(self):
+        self.assertEqual(fc.series_label("Mitow Report"), "Mitow Report")
+        self.assertEqual(fc.series_label("PLA in their own words"), "PLA in their own words")
+
+    def test_same_title_ignores_label_and_punctuation(self):
+        self.assertTrue(fc.same_title("ITOW Interim Measures", "ITOW: Interim Measures"))
+        self.assertFalse(fc.same_title("Vol 1", "The Governance of China"))
+
+
 class BestDate(unittest.TestCase):
     PDF = b"%PDF-1.7 /CreationDate (D:20150302120000) %%EOF"
 

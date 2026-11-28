@@ -526,6 +526,24 @@ a:hover { color: var(--console); text-decoration-color: currentColor; }
 }
 .button--ghost:hover { border-color: var(--console); color: var(--console); }
 
+/* Back-to-top button: appears once the reader has scrolled a screen down. */
+.to-top {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 40;
+  min-height: 44px;
+  padding: 12px 16px;
+  background: var(--panel);
+  box-shadow: var(--glow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+}
+.to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+main:focus { outline: none; }
+
 .pager { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
 
 /* --- Console footer ----------------------------------------------------- */
@@ -1094,6 +1112,7 @@ a:hover { color: var(--console); text-decoration-color: currentColor; }
 @media (prefers-reduced-motion: reduce) {
   .signal,
   .console__cursor { animation: none; }
+  .to-top { transition: none; transform: none; }
   .clock-face.is-ticking .clock-face__second { display: none; }
 }
 
@@ -1101,6 +1120,7 @@ a:hover { color: var(--console); text-decoration-color: currentColor; }
   body { background: #fff; color: #000; }
   body::after,
   .topbar,
+  .to-top,
   .console,
   .grid-split__rail,
   .pager,
