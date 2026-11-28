@@ -59,6 +59,9 @@ Wayback Machine instead:
   file name as the title and takes its date from the file name or from the PDF.
   Publications that were never archived are listed in
   `docs/_data/casi_missing.json` and shown at the bottom of the page.
+- `docs/_data/casi_titles.json` holds titles read off the PDFs themselves, by
+  path. `fetch_casi.py` uses one where no article page gives a title. Add an
+  entry by hand to fix a title that is still a file name.
 
 Re-running either script only fetches what is missing.
 

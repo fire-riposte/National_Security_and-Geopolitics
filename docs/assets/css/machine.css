@@ -588,6 +588,7 @@ a:hover { color: var(--console); text-decoration-color: currentColor; }
 .catalog__item[hidden] { display: none; }
 .log--full .catalog__item a.catalog__link { padding: 0 0 4px; }
 .catalog__meta { font-size: 0.72rem; }
+.catalog__meta > span { min-width: 0; overflow-wrap: anywhere; }
 .log--full .catalog__meta a { display: inline; padding: 0; color: var(--muted); font: inherit; letter-spacing: inherit; }
 .log--full .catalog__meta a:hover { color: var(--console); }
 
@@ -1078,8 +1079,16 @@ a:hover { color: var(--console); text-decoration-color: currentColor; }
   .brief h2#espionage-and-counterintelligence::after { margin-left: 0; }
 }
 
+@media (max-width: 720px) {
+  .catalog-jump { gap: 6px; }
+  .catalog-jump .button { padding: 7px 11px; font-size: 0.68rem; letter-spacing: 0.08em; }
+}
+
+/* Five tabs: three on the first row, two on the second. */
 @media (max-width: 440px) {
-  .tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .tab { grid-column: span 2; }
+  .tab:nth-child(n+4) { grid-column: span 3; }
 }
 
 @media (prefers-reduced-motion: reduce) {
